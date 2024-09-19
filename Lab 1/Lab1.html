@@ -27,16 +27,25 @@
         const ctx = canvas.getContext("2d");
         // Set the canvas up for drawing in 2D.
 
-        ctx.fillStyle = "rgb(0, 0, 0)";
-        ctx.font = "50px Arial";
-        ctx.fillText("Trin",10,80);
-		
 		// Set the fill colour to bright red.
         ctx.fillStyle = "rgb(0, 255, 0)";
         ctx.fillRect(10, 10, 250, 150);//filled rectangle
+
+        ctx.fillStyle = "rgb(0, 0, 0)";
+        ctx.font = "50px Arial";
+        ctx.fillText("Trin",10,80);
        
         ctx.fillStyle = "rgba(255, 0, 0, 0.5)";//transparent rectangle
 		ctx.fillRect(120, 120, 250, 150);//filled rectangle
+
+        //add circle 1
+        ctx.beginPath();
+        ctx.arc(95,250,40,0,2 * Math.PI);
+        ctx.fillStyle  = "rgb(255, 0, 0)";
+        ctx.fill();
+        ctx.strokeStyle = "rgb(0, 0, 225)";
+        ctx.lineWidth = 3;
+        ctx.stroke();
 
 		
  
