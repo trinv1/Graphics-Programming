@@ -20,9 +20,16 @@
     <canvas id="canvasOne" width="500" height="500"></canvas>
 
     <script type="text/javascript">
-		// Gets a handle to the element with id canvasOne.
 		
-		// Set the canvas up for drawing in 2D.
+        const canvas = document.getElementById("canvasOne");
+        // Gets a handle to the element with id canvasOne.
+		
+        const ctx = canvas.getContext("2d");
+        // Set the canvas up for drawing in 2D.
+
+        ctx.fillStyle = "rgb(0, 0, 0)";
+        ctx.font = "50px Arial";
+        ctx.fillText("Trin",10,80);
 		
 		// Set the fill colour to bright red.
 		
