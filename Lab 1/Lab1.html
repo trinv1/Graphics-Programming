@@ -64,6 +64,23 @@
         ctx.lineWidth = 3;
         ctx.stroke();
 
+        //add 3/4 circle
+        ctx.beginPath();
+        ctx.arc(440, 360, 50, 0, 0.5 * Math.PI, true);
+
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "rgb(0, 193, 207)";
+
+        //create
+        ctx.lineTo(440, 360);
+        ctx.lineTo(450, 360);
+
+        ctx.fillStyle = "rgb(97, 240, 250)";
+        ctx.fill();
+
+        ctx.stroke();
+        
+
 	
     </script>
 
