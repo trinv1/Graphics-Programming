@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+      body {
+          background-color: white;
+      }
+
+      canvas {
+        border: black;
+        border-style: solid;
+        }
+
+    </style>
+
+  </head>
+
+  <body>
+    <h1>Trin</h1>
+    <canvas id="canvas-for-ball" width = "300" height = "200"></canvas>
+
+    <script type="text/javascript">
+      // Gets a handle to the element with id canvasOne.
+      var canvas = document.getElementById("canvas-for-ball");
+      // Get a 2D context for the canvas.
+      var ctx = canvas.getContext("2d");
+      
+
+        //vertical location of the ball
+      var yPosition = 10;
+      var ySpeed = 1;
+ 
+      // A function to repeat every time the animation loops.
+      function repeatme() {
+
+        ctx.clearRect(0, 0, 300, 200);
+
+        // Draw the ball (stroked, not filled).
+        ctx.beginPath();
+        ctx.arc(50, yPosition, 3, 0, 2 * Math.PI);
+        ctx.stroke();
+        
+        // Update the y location.
+        yPosition += ySpeed;
+
+          // If the ball hits the bottom of the canvas.
+          if (yPosition == 197) {
+             ySpeed = ySpeed * -1;
+          } 
+
+          if (yPosition == 3) {
+             ySpeed = ySpeed * -1;
+          }
+
+         
+        window.requestAnimationFrame(repeatme); 
+      }
+      
+      // Get the animation going.
+      repeatme();
+    </script>
+
+  </body>
+
+</html>
