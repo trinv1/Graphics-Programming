@@ -44,8 +44,7 @@
         draw(){
             // Draw the ball (stroked, not filled).
          ctx.beginPath();
-        ctx.arc(50, this.yPosition, 3, 0, 2 * Math.PI);
-        ctx.arc(50, this.xPosition, 80, 0, 2 * Math.PI);
+        ctx.arc(this.xPosition, this.yPosition, 3, 0, 2 * Math.PI);
 
         ctx.stroke();
         }
@@ -53,6 +52,9 @@
         move(){
             ///update y location
             this.yPosition += this.ySpeed;
+
+            ///update x location
+            this.xPosition += this.xSpeed;
 
               // If the ball hits the bottom of the canvas.
           if (this.yPosition == 197) {
@@ -63,10 +65,12 @@
             this.ySpeed = this.ySpeed * -1;
           }
 
+            
+
         }
       }
 
-      myBall = new Ball(10, 1)
+      myBall = new Ball(10, 1, 10, 1)
 
       // A function to repeat every time the animation loops.
       function repeatme() {
