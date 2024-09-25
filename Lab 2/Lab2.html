@@ -43,10 +43,21 @@
 
         draw(){
             // Draw the ball (stroked, not filled).
-         ctx.beginPath();
-        ctx.arc(this.xPosition, this.yPosition, 10, 0, 2 * Math.PI);
+            ctx.beginPath();
+            ctx.arc(this.xPosition, this.yPosition, 10, 0, 2 * Math.PI);
+  
+            this.rotation = 0;
 
-        ctx.stroke();
+      //rotation position   //rotation speed   
+            this.rotation = this.rotation + 0.1;
+
+            var x1 = 9* (Math.cos(Math.PI/4)+this.rotation)+this.xPosition;
+            var y1 = 9* (Math.sin(Math.PI/4)+this.rotation)+this.yPosition;
+            
+            ctx.moveTo(this.xPosition, this.yPosition);
+            ctx.lineTo(x1, y1);
+
+            ctx.stroke();
         }
 
         move(){
