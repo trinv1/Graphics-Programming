@@ -60,10 +60,14 @@
             var x1 = 15* Math.cos((Math.PI/4)+this.rotation)+this.xPosition;
             var y1 = 15* Math.sin((Math.PI/4)+this.rotation)+this.yPosition;
 
+            var x2 = 15* Math.cos((Math.PI/2)+this.rotation)+this.xPosition;
+            var y2 = 15* Math.sin((Math.PI/2)+this.rotation)+this.yPosition;
             
             ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
             ctx.lineTo(x1, y1);//drawing line to (x1, xy)
 
+            ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
+            ctx.lineTo(x2, y2);//drawing line to (x1, xy)
 
             ctx.stroke();
         }
