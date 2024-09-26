@@ -56,20 +56,28 @@
       //rotation position   //rotation speed   
             this.rotation = this.rotation + 0.1; //updating rotation
 
-            //calculating end point of the 1st line 
-            var x1 = 15* Math.cos((Math.PI/4)+this.rotation)+this.xPosition;
-            var y1 = 15* Math.sin((Math.PI/4)+this.rotation)+this.yPosition;
+            //calculating end point of middle line
+            var x1 = 15* Math.cos((Math.PI/2)+this.rotation)+this.xPosition;
+            var y1 = 15* Math.sin((Math.PI/2)+this.rotation)+this.yPosition;
 
-            var x2 = 15* Math.cos((Math.PI/2)+this.rotation)+this.xPosition;
-            var y2 = 15* Math.sin((Math.PI/2)+this.rotation)+this.yPosition;
+            //calculating end point of left line
+            var x2 = 15* Math.cos((3*Math.PI/4)+this.rotation)+this.xPosition;
+            var y2 = 15* Math.sin((3*Math.PI/4)+this.rotation)+this.yPosition;
+
+            //calculating end point of right line
+            var x3 = 15* Math.cos((Math.PI/4)+this.rotation)+this.xPosition;
+            var y3 = 15* Math.sin((Math.PI/4)+this.rotation)+this.yPosition;
             
             ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
             ctx.lineTo(x1, y1);//drawing line to (x1, xy)
 
             ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
-            ctx.lineTo(x2, y2);//drawing line to (x1, xy)
+            ctx.lineTo(x2, y2);//drawing line to (x2, xy2)
 
-            ctx.stroke();
+            ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
+            ctx.lineTo(x3, y3);//drawing line to (x3, xy3)
+
+            ctx.stroke();//completing drawing
         }
 
         move(){
