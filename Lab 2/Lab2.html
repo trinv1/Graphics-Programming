@@ -67,6 +67,10 @@
             //calculating end point of right line
             var x3 = 15* Math.cos((Math.PI/4)+this.rotation)+this.xPosition;
             var y3 = 15* Math.sin((Math.PI/4)+this.rotation)+this.yPosition;
+
+            //calculating end point of top middle line
+            var x4 = -15* Math.cos((Math.PI/2)+this.rotation)+this.xPosition;
+            var y4 = -15* Math.sin((Math.PI/2)+this.rotation)+this.yPosition;
             
             ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
             ctx.lineTo(x1, y1);//drawing line to (x1, xy)
@@ -76,6 +80,9 @@
 
             ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
             ctx.lineTo(x3, y3);//drawing line to (x3, xy3)
+
+            ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
+            ctx.lineTo(x4, y4);//drawing line to (x4, xy4)
 
             ctx.stroke();//completing drawing
         }
