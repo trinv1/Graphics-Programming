@@ -36,26 +36,34 @@
 
         constructor(yPosition, ySpeed, xPosition, xSpeed){
             this.yPosition = yPosition;
-            this. ySpeed = ySpeed
+            this.ySpeed = ySpeed;
             this.xPosition = xPosition;
-            this.xSpeed = xSpeed
+            this.xSpeed = xSpeed;
+
+      
+            this.rotation = 0;//initializing rotation
+
+
         }
 
         draw(){
             // Draw the ball (stroked, not filled).
             ctx.beginPath();
-            ctx.arc(this.xPosition, this.yPosition, 10, 0, 2 * Math.PI);
+            ctx.arc(this.xPosition, this.yPosition, 15, 0, 2 * Math.PI);
+            ctx.stroke();
+
   
-            this.rotation = 0;
-
       //rotation position   //rotation speed   
-            this.rotation = this.rotation + 0.1;
+            this.rotation = this.rotation + 0.1; //updating rotation
 
-            var x1 = 9* (Math.cos(Math.PI/4)+this.rotation)+this.xPosition;
-            var y1 = 9* (Math.sin(Math.PI/4)+this.rotation)+this.yPosition;
+            //calculating end point of the 1st line 
+            var x1 = 15* Math.cos((Math.PI/4)+this.rotation)+this.xPosition;
+            var y1 = 15* Math.sin((Math.PI/4)+this.rotation)+this.yPosition;
+
             
-            ctx.moveTo(this.xPosition, this.yPosition);
-            ctx.lineTo(x1, y1);
+            ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
+            ctx.lineTo(x1, y1);//drawing line to (x1, xy)
+
 
             ctx.stroke();
         }
