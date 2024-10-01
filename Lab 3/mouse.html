@@ -29,12 +29,19 @@
       // Make the fill style red.
       ctx.fillStyle = "rgb(255, 0, 0)";
 
-    
+      var canvasPosition = //declaring cabvas position
+      {
+        x:canvas.offsetLeft,
+        y:canvas.offsetTop
+      };
       
       canvas.addEventListener("click", function(event) { 
 
-
-     
+        //figure out local mouse coords
+        var mouse = {
+          x:event.clientX - canvasPosition.x,
+          y:event.clientY - canvasPosition.y
+        }
 
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, 6, 0, 2 * Math.PI);
