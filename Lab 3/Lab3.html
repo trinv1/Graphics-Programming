@@ -31,12 +31,34 @@
       // Get a 2D context for the canvas.
       var ctx = canvas.getContext("2d");
 
+      var canvasPosition = //declaring canvas position
+      {
+        x:canvas.offsetLeft,
+        y:canvas.offsetTop
+      };
+
+      var noClicks = 0;
+
       class Paddle{
-        constructor(yPosition, ){
+        constructor(yPosition, xPosition, width, height){
             this.yPosition = yPosition;
+            this.xPosition = xPosition;
+            this.width = width;
+            this.height = height
         }
 
-      }
+        drawPaddle1(){
+
+            ctx.beginPath();
+            ctx.fillStyle = "rgb(255, 0, 0)";
+            ctx.fillRect(this.xPosition, this.yPosition, this.width, this.height);//filled rectangle
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(this.xPosition, this.yPosition, this.width, this.height);
+            ctx.lineWidth = 3;
+
+        }
+        
+    }
 
       class Ball{
 
@@ -122,25 +144,43 @@
       }
 
       myBall = new Ball(50, 1, 50, 1, 15)
-      myPaddle = new Pabble(x,y)
+      myPaddle = new Paddle(10, 10, 20, 40)
+
+      
+      
+      canvas.addEventListener("click", function(event) { 
+
+        //figure out local mouse coords
+        var mouse = {
+        x:event.clientX - canvasPosition.x,
+        y:event.clientY - canvasPosition.y
+        }
+
+        myPaddle.yPosition = mouse.y; //updating paddles y position based on mouse click event
+
+        noClicks += 1;
+        console.log(noClicks);
+        console.log(event);
+        });
+
 
       // A function to repeat every time the animation loops.
       function repeatme() {
 
-       ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
          
         myBall.draw();//calling draw
-        myBall.move();//calling move
-
-        myPaddle.draw();//calling draw
-        myPaddle.move();//calling move
-
-         
-        window.requestAnimationFrame(repeatme); 
+        myBall.move();//calling moves
+ 
+        myPaddle.drawPaddle1();  
+                 
+        window.requestAnimationFrame(repeatme);    
       }
-      
+
       // Get the animation going.
       repeatme();
+
+
     </script>
 
   </body>
