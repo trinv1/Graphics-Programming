@@ -39,7 +39,7 @@
 
       var noClicks = 0;
 
-      class Paddle{
+      class Paddle1{
         constructor(yPosition, xPosition, width, height){
             this.yPosition = yPosition;
             this.xPosition = xPosition;
@@ -60,6 +60,26 @@
         
     }
 
+    class Paddle2{
+        constructor(yPosition, xPosition, width, height){
+            this.yPosition = yPosition;
+            this.xPosition = xPosition;
+            this.width = width;
+            this.height = height
+        }
+
+        drawPaddle2(){
+
+            ctx.beginPath();
+            ctx.fillStyle = "rgb(255, 0, 0)";
+            ctx.fillRect(this.xPosition, this.yPosition, this.width, this.height);//filled rectangle
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(this.xPosition, this.yPosition, this.width, this.height);
+            ctx.lineWidth = 3;
+
+        }
+        
+    }
       class Ball{
 
         constructor(yPosition, ySpeed, xPosition, xSpeed, radius){
@@ -144,7 +164,8 @@
       }
 
       myBall = new Ball(50, 1, 50, 1, 15)
-      myPaddle = new Paddle(10, 10, 20, 40)
+      myPaddle1 = new Paddle1(10, 10, 20, 40)
+      myPaddle2 = new Paddle2(10, 270, 20, 40)
 
       // A function to repeat every time the animation loops.
       function repeatme() {
@@ -154,7 +175,8 @@
         myBall.draw();//calling draw
         myBall.move();//calling moves
  
-        myPaddle.drawPaddle1();  
+        myPaddle1.drawPaddle1();  
+        myPaddle2.drawPaddle2();  
                  
         window.requestAnimationFrame(repeatme);    
       }
@@ -171,7 +193,8 @@
         }
 
 
-        myPaddle.yPosition = mouse.y; //updating paddles y position based on mouse click location
+        myPaddle1.yPosition = mouse.y; //updating paddles y position based on mouse click location
+        myPaddle2.yPosition = mouse.y; //updating paddles y position based on mouse click location
 
         noClicks += 1;
         console.log(noClicks);
@@ -183,14 +206,12 @@
         switch (e.keyCode) {
             // Up arrow
             case 38:
-            myPaddle.yPosition -= 10;
+            myPaddle1.yPosition -= 10;
             console.log("Paddle moved up");
-
-            
             break;
             // Down arrow
             case 40:
-            myPaddle.yPosition += 10;
+            myPaddle1.yPosition += 10;
             console.log("Paddle moved down");
             break;
         }
