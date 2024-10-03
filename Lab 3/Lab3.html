@@ -78,6 +78,16 @@
             ctx.lineWidth = 3;
 
         }
+
+        move(){
+
+            this.yPosition = yPosition;
+            this.xPosition = xPosition;
+
+            if (yPosition > canvas.height){
+                    yPosition = canvas.height;
+            }
+        }
         
     }
       class Ball{
@@ -175,7 +185,7 @@
         myBall.draw();//calling draw
         myBall.move();//calling moves
  
-        myPaddle1.drawPaddle1();  
+        myPaddle1.drawPaddle1(); 
         myPaddle2.drawPaddle2();  
                  
         window.requestAnimationFrame(repeatme);    
@@ -196,6 +206,15 @@
         myPaddle1.yPosition = mouse.y; //updating paddles y position based on mouse click location
         myPaddle2.yPosition = mouse.y; //updating paddles y position based on mouse click location
 
+         // Ensure paddle doesn't move beyond canvas bottom
+        if (myPaddle1.yPosition + myPaddle1.height > canvas.height) {
+            myPaddle1.yPosition = canvas.height - myPaddle1.height; // Limit paddle 1
+        }
+        
+        if (myPaddle2.yPosition + myPaddle2.height > canvas.height) {
+            myPaddle2.yPosition = canvas.height - myPaddle2.height; // Limit paddle 2
+        }
+
         noClicks += 1;
         console.log(noClicks);
         console.log(event);
@@ -208,21 +227,33 @@
             case 38:
             myPaddle1.yPosition -= 10;
             console.log("Paddle left moved up");
+            if (myPaddle1.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
+                myPaddle1.yPosition = 0;
+            }
             break;
             //down arrow
             case 40:
             myPaddle1.yPosition += 10;
             console.log("Paddle left moved down");
+            if (myPaddle1.yPosition + myPaddle1.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
+            myPaddle1.yPosition = canvas.height - myPaddle1.height; 
+            }
             break;
             //left arrow
             case 37:
             myPaddle2.yPosition -= 10;
             console.log("Paddle right moved up");
+            if (myPaddle2.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
+                myPaddle2.yPosition = 0;
+            }
             break;
             //right arrow
             case 39:
             myPaddle2.yPosition += 10;
             console.log("Paddle right moved down");
+            if (myPaddle2.yPosition + myPaddle2.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
+            myPaddle2.yPosition = canvas.height - myPaddle2.height; 
+            }
             break;
         }
     });
