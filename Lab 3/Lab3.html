@@ -44,7 +44,7 @@
             this.yPosition = yPosition;
             this.xPosition = xPosition;
             this.width = width;
-            this.height = height
+            this.height = height;
         }
 
         drawPaddle1(){
@@ -90,6 +90,13 @@
         }
         
     }
+
+    function collides(obj1, obj2) {
+  return obj1.xPosition < obj2.xPosition + obj2.width &&
+         obj1.xPosition + obj1.width > obj2.xPosition &&
+         obj1.yPosition < obj2.yPosition + obj2.height &&
+         obj1.yPosition + obj1.height > obj2.yPosition;
+}
       class Ball{
 
         constructor(yPosition, ySpeed, xPosition, xSpeed, radius){
@@ -103,7 +110,7 @@
             this.height = canvas.height;
             this.width = canvas.width;
             this.gravity = 0.1;  //constant downward acceleration
-
+            this.bounceDecrease = 0.9; //kinetic energy loss of 90%
         }
 
         draw(){
@@ -145,10 +152,12 @@
 
             ctx.stroke();//completing drawing
         }
+ 
+
 
         move(){
 
-             // Apply gravity to the vertical speed (accelerating the ball downward)
+             //applied gravity to the vertical speed
              this.ySpeed += this.gravity;
 
               //update y location
@@ -158,23 +167,35 @@
 
             if (this.yPosition >= this.height - this.radius) {// If the ball hits the bottom of the canvas.
               this.ySpeed = this.ySpeed * -1;//change direction
-              //this.rotationSpeed = this.rotationSpeed *-1;//change rotation
+              
+                if (this.ySpeed > 0) {
+                this.ySpeed = -this.ySpeed * this.bounceDecrease;  //Inverting and reducing speed
+                }
+
+                this.yPosition = this.height - this.radius;  //adjusting position to stay within bounds
             } 
 
             if (this.yPosition <= this.radius) {//if ball hits right side of canvas
               this.ySpeed = this.ySpeed * -1;//change direction
-             // this.rotationSpeed = this.rotationSpeed *-1;//change rotation
             }
 
             else if (this.xPosition >= this.width - this.radius) {//if ball hits left of canvas 
               this.xSpeed = this.xSpeed * -1;//change direction
-             // this.rotationSpeed = this.rotationSpeed *-1;//change rotation
             } 
 
             else if (this.xPosition <= this.radius) {//if ball hits top of canvas
               this.xSpeed = this.xSpeed * -1;//change direction
-             // this.rotationSpeed = this.rotationSpeed *-1;//change rotation
-          }
+             }
+
+            if ( this.xPosition - this.radius <= myPaddle1.xPosition + myPaddle1.width &&  //checking if the ball touches the paddle's width
+            this.yPosition >= myPaddle1.yPosition && this.yPosition <= myPaddle1.yPosition + myPaddle1.height ) {//checking if ball touches paddles height
+                this.xSpeed = this.xSpeed * -1;//change direction
+            }
+
+           if ( this.xPosition + this.radius >= myPaddle2.xPosition &&  //checking if the ball touches the paddle's width
+            this.yPosition >= myPaddle2.yPosition && this.yPosition <= myPaddle2.yPosition + myPaddle2.height ) {//checking if ball touches paddles height
+                this.xSpeed = this.xSpeed * -1;//change direction
+            }
         }
       }
 
