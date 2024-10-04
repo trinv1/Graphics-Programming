@@ -153,22 +153,22 @@
               
             if (this.yPosition >= this.height - this.radius) {// If the ball hits the bottom of the canvas.
               this.ySpeed = this.ySpeed * -1;//change direction
-              this.rotationSpeed = this.rotationSpeed *-1;//cange rotation
+              //this.rotationSpeed = this.rotationSpeed *-1;//change rotation
             } 
 
             if (this.yPosition <= this.radius) {//if ball hits right side of canvas
               this.ySpeed = this.ySpeed * -1;//change direction
-              this.rotationSpeed = this.rotationSpeed *-1;//change rotation
+             // this.rotationSpeed = this.rotationSpeed *-1;//change rotation
             }
 
             else if (this.xPosition >= this.width - this.radius) {//if ball hits left of canvas 
               this.xSpeed = this.xSpeed * -1;//change direction
-              this.rotationSpeed = this.rotationSpeed *-1;//change rotation
+             // this.rotationSpeed = this.rotationSpeed *-1;//change rotation
             } 
 
             else if (this.xPosition <= this.radius) {//if ball hits top of canvas
               this.xSpeed = this.xSpeed * -1;//change direction
-              this.rotationSpeed = this.rotationSpeed *-1;//change rotation
+             // this.rotationSpeed = this.rotationSpeed *-1;//change rotation
           }
         }
       }
@@ -206,7 +206,7 @@
         myPaddle1.yPosition = mouse.y; //updating paddles y position based on mouse click location
         myPaddle2.yPosition = mouse.y; //updating paddles y position based on mouse click location
 
-         // Ensure paddle doesn't move beyond canvas bottom
+         //Ensuring paddle doesn't move beyond canvas bottom
         if (myPaddle1.yPosition + myPaddle1.height > canvas.height) {
             myPaddle1.yPosition = canvas.height - myPaddle1.height; // Limit paddle 1
         }
@@ -223,38 +223,56 @@
         // Paddle control with keypresses
         document.body.addEventListener('keydown', function (e) {
         switch (e.keyCode) {
+            
             //up arrow
             case 38:
-            myPaddle1.yPosition -= 10;
-            console.log("Paddle left moved up");
-            if (myPaddle1.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
-                myPaddle1.yPosition = 0;
-            }
+                myPaddle1.yPosition -= 10;
+                console.log("Paddle left moved up");
+                if (myPaddle1.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
+                    myPaddle1.yPosition = 0;
+                }
             break;
+            
             //down arrow
             case 40:
-            myPaddle1.yPosition += 10;
-            console.log("Paddle left moved down");
-            if (myPaddle1.yPosition + myPaddle1.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
-            myPaddle1.yPosition = canvas.height - myPaddle1.height; 
-            }
+                myPaddle1.yPosition += 10;
+                console.log("Paddle left moved down");
+                if (myPaddle1.yPosition + myPaddle1.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
+                myPaddle1.yPosition = canvas.height - myPaddle1.height; 
+                }
             break;
+            
             //left arrow
             case 37:
-            myPaddle2.yPosition -= 10;
-            console.log("Paddle right moved up");
-            if (myPaddle2.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
-                myPaddle2.yPosition = 0;
-            }
+                myPaddle2.yPosition -= 10;
+                console.log("Paddle right moved up");
+                if (myPaddle2.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
+                    myPaddle2.yPosition = 0;
+                }
             break;
+            
             //right arrow
             case 39:
-            myPaddle2.yPosition += 10;
-            console.log("Paddle right moved down");
-            if (myPaddle2.yPosition + myPaddle2.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
-            myPaddle2.yPosition = canvas.height - myPaddle2.height; 
-            }
+                myPaddle2.yPosition += 10;
+                console.log("Paddle right moved down");
+                if (myPaddle2.yPosition + myPaddle2.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
+                myPaddle2.yPosition = canvas.height - myPaddle2.height; 
+                }
             break;
+            
+            //'A' key
+            case 65:
+            myBall.rotationSpeed += 0.02; // increase rotation speed of symbol
+            console.log("Balls rotation speed has increased");
+            break;
+
+            //'S' key
+            case 83:
+            myBall.rotationSpeed -= 0.02; // decrease rotation speed iof symbol
+
+            console.log("Balls rotation speed has decreased");
+            break;
+
         }
     });
 
