@@ -228,23 +228,30 @@
         y:event.clientY - canvasPosition.y
         }
 
-
-        myPaddle1.yPosition = mouse.y; //updating paddles y position based on mouse click location
-        myPaddle2.yPosition = mouse.y; //updating paddles y position based on mouse click location
+        //checking if the click is on paddle 1
+        if (mouse.x <= canvas.width / 2) {
+        myPaddle1.yPosition = mouse.y; // updating paddle 1 position based on mouse click location 
+        }
 
          //Ensuring paddle doesn't move beyond canvas bottom
-        if (myPaddle1.yPosition + myPaddle1.height > canvas.height) {
-            myPaddle1.yPosition = canvas.height - myPaddle1.height; // Limit paddle 1
+         if (myPaddle1.yPosition + myPaddle1.height > canvas.height) {
+            myPaddle1.yPosition = canvas.height - myPaddle1.height; // Limiting paddle 1
+        }     
+
+        //checking if the click is on the right side (for Paddle 2)
+        if (mouse.x > canvas.width / 2) {
+        myPaddle2.yPosition = mouse.y; // updating paddle 2 position based on mouse click location
         }
-        
+
         if (myPaddle2.yPosition + myPaddle2.height > canvas.height) {
-            myPaddle2.yPosition = canvas.height - myPaddle2.height; // Limit paddle 2
+            myPaddle2.yPosition = canvas.height - myPaddle2.height; // Limiting paddle 2
         }
 
         noClicks += 1;
         console.log(noClicks);
         console.log(event);
         });
+    
 
         // Paddle control with keypresses
         document.body.addEventListener('keydown', function (e) {
