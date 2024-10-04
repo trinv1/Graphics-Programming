@@ -102,6 +102,7 @@
             this.radius = radius;
             this.height = canvas.height;
             this.width = canvas.width;
+            this.gravity = 0.1;  //constant downward acceleration
 
         }
 
@@ -146,11 +147,15 @@
         }
 
         move(){
+
+             // Apply gravity to the vertical speed (accelerating the ball downward)
+             this.ySpeed += this.gravity;
+
               //update y location
               this.yPosition += this.ySpeed;
               ///update x location
               this.xPosition += this.xSpeed;
-              
+
             if (this.yPosition >= this.height - this.radius) {// If the ball hits the bottom of the canvas.
               this.ySpeed = this.ySpeed * -1;//change direction
               //this.rotationSpeed = this.rotationSpeed *-1;//change rotation
