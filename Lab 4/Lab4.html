@@ -38,21 +38,20 @@
     var noClicks = 0;
 
     class Paddle {
-      constructor(yPosition, xPosition, width, height) {
+      constructor(yPosition, xPosition, radius) {
         this.yPosition = yPosition;
         this.xPosition = xPosition;
-        this.width = width;
-        this.height = height
+        //this.width = width;
+        //this.height = height
+        this.radius = radius;
       }
 
       draw() {
 
-        ctx.beginPath();
-        ctx.fillStyle = "rgb(255, 0, 0)";
-        ctx.fillRect(this.xPosition, this.yPosition, this.width, this.height);//filled rectangle
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(this.xPosition, this.yPosition, this.width, this.height);
-        ctx.lineWidth = 3;
+          // Draw the ball (stroked, not filled).
+       ctx.beginPath();
+        ctx.arc(this.xPosition, this.yPosition, this.radius, 0, 2 * Math.PI);
+        ctx.stroke();
 
       }
 
@@ -172,8 +171,8 @@
     }
 
     myBall = new Ball(50, 1, 50, 1, 15)
-    myPaddle1 = new Paddle(10, 10, 20, 40)
-    myPaddle2 = new Paddle(10, 270, 20, 40)
+    myPaddle1 = new Paddle(50, 30, 15)
+    myPaddle2 = new Paddle(50, 270, 15)
 
     // A function to repeat every time the animation loops.
     function repeatme() {
