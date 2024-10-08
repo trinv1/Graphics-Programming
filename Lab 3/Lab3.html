@@ -1,316 +1,309 @@
-
 <!DOCTYPE html>
 
 <html>
 
-  <head>
-    <meta charset="UTF-8">
-    <title>Canvas</title>
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas</title>
 
-    <style type="text/css">
-      body {
-          background-color: white;
+  <style type="text/css">
+    body {
+      background-color: white;
+    }
+
+    canvas {
+      border: black;
+      border-style: solid;
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1>Trin</h1>
+  <canvas id="canvas-for-ball" width="300" height="200"></canvas>
+
+  <script type="text/javascript">
+    // Gets a handle to the element with id canvasOne.
+    var canvas = document.getElementById("canvas-for-ball");
+    // Get a 2D context for the canvas.
+    var ctx = canvas.getContext("2d");
+
+    var canvasPosition = //declaring canvas position
+    {
+      x: canvas.offsetLeft,
+      y: canvas.offsetTop
+    };
+
+    var noClicks = 0;
+
+    class Paddle1 {
+      constructor(yPosition, xPosition, width, height) {
+        this.yPosition = yPosition;
+        this.xPosition = xPosition;
+        this.width = width;
+        this.height = height;
       }
 
-      canvas {
-        border: black;
-        border-style: solid;
-        }
+      drawPaddle1() {
 
-    </style>
+        ctx.beginPath();
+        ctx.fillStyle = "rgb(255, 0, 0)";
+        ctx.fillRect(this.xPosition, this.yPosition, this.width, this.height);//filled rectangle
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.xPosition, this.yPosition, this.width, this.height);
+        ctx.lineWidth = 3;
 
-  </head>
+      }
 
-  <body>
-    <h1>Trin</h1>
-    <canvas id="canvas-for-ball" width = "300" height = "200"></canvas>
-
-    <script type="text/javascript">
-      // Gets a handle to the element with id canvasOne.
-      var canvas = document.getElementById("canvas-for-ball");
-      // Get a 2D context for the canvas.
-      var ctx = canvas.getContext("2d");
-
-      var canvasPosition = //declaring canvas position
-      {
-        x:canvas.offsetLeft,
-        y:canvas.offsetTop
-      };
-
-      var noClicks = 0;
-
-      class Paddle1{
-        constructor(yPosition, xPosition, width, height){
-            this.yPosition = yPosition;
-            this.xPosition = xPosition;
-            this.width = width;
-            this.height = height;
-        }
-
-        drawPaddle1(){
-
-            ctx.beginPath();
-            ctx.fillStyle = "rgb(255, 0, 0)";
-            ctx.fillRect(this.xPosition, this.yPosition, this.width, this.height);//filled rectangle
-            ctx.strokeStyle = "black";
-            ctx.strokeRect(this.xPosition, this.yPosition, this.width, this.height);
-            ctx.lineWidth = 3;
-
-        }
-        
     }
 
-    class Paddle2{
-        constructor(yPosition, xPosition, width, height){
-            this.yPosition = yPosition;
-            this.xPosition = xPosition;
-            this.width = width;
-            this.height = height
+    class Paddle2 {
+      constructor(yPosition, xPosition, width, height) {
+        this.yPosition = yPosition;
+        this.xPosition = xPosition;
+        this.width = width;
+        this.height = height
+      }
+
+      drawPaddle2() {
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgb(255, 0, 0)";
+        ctx.fillRect(this.xPosition, this.yPosition, this.width, this.height);//filled rectangle
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.xPosition, this.yPosition, this.width, this.height);
+        ctx.lineWidth = 3;
+
+      }
+
+      move() {
+
+        this.yPosition = yPosition;
+        this.xPosition = xPosition;
+
+        if (yPosition > canvas.height) {
+          yPosition = canvas.height;
         }
+      }
 
-        drawPaddle2(){
-
-            ctx.beginPath();
-            ctx.fillStyle = "rgb(255, 0, 0)";
-            ctx.fillRect(this.xPosition, this.yPosition, this.width, this.height);//filled rectangle
-            ctx.strokeStyle = "black";
-            ctx.strokeRect(this.xPosition, this.yPosition, this.width, this.height);
-            ctx.lineWidth = 3;
-
-        }
-
-        move(){
-
-            this.yPosition = yPosition;
-            this.xPosition = xPosition;
-
-            if (yPosition > canvas.height){
-                    yPosition = canvas.height;
-            }
-        }
-        
     }
 
-    function collides(obj1, obj2) {
-  return obj1.xPosition < obj2.xPosition + obj2.width &&
-         obj1.xPosition + obj1.width > obj2.xPosition &&
-         obj1.yPosition < obj2.yPosition + obj2.height &&
-         obj1.yPosition + obj1.height > obj2.yPosition;
-}
-      class Ball{
-
-        constructor(yPosition, ySpeed, xPosition, xSpeed, radius){
-            this.yPosition = yPosition;
-            this.ySpeed = ySpeed;
-            this.xPosition = xPosition;
-            this.xSpeed = xSpeed;
-            this.rotation = 0;//initializing rotation
-            this.rotationSpeed = 0.05;//initializing rotation speed
-            this.radius = radius;
-            this.height = canvas.height;
-            this.width = canvas.width;
-            this.gravity = 0.1;  //constant downward acceleration
-            this.bounceDecrease = 0.9; //kinetic energy loss of 90%
-        }
-
-        draw(){
-            // Draw the ball (stroked, not filled).
-            ctx.beginPath();
-            ctx.arc(this.xPosition, this.yPosition, this.radius, 0, 2 * Math.PI);
-            ctx.stroke();
   
-            //rotation position   //rotation speed   
-            this.rotation += this.rotationSpeed;
+    class Ball {
 
-            //calculating end point of middle line
-            var x1 = 15* Math.cos((Math.PI/2)+this.rotation)+this.xPosition;
-            var y1 = 15* Math.sin((Math.PI/2)+this.rotation)+this.yPosition;
-
-            //calculating end point of left line
-            var x2 = 15* Math.cos((3*Math.PI/4)+this.rotation)+this.xPosition;
-            var y2 = 15* Math.sin((3*Math.PI/4)+this.rotation)+this.yPosition;
-
-            //calculating end point of right line
-            var x3 = 15* Math.cos((Math.PI/4)+this.rotation)+this.xPosition;
-            var y3 = 15* Math.sin((Math.PI/4)+this.rotation)+this.yPosition;
-
-            //calculating end point of top middle line
-            var x4 = -15* Math.cos((Math.PI/2)+this.rotation)+this.xPosition;
-            var y4 = -15* Math.sin((Math.PI/2)+this.rotation)+this.yPosition;
-            
-            ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
-            ctx.lineTo(x1, y1);//drawing line to (x1, y1)
-
-            ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
-            ctx.lineTo(x2, y2);//drawing line to (x2, y2)
-
-            ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
-            ctx.lineTo(x3, y3);//drawing line to (x3, y3)
-
-            ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
-            ctx.lineTo(x4, y4);//drawing line to (x4, y4)
-
-            ctx.stroke();//completing drawing
-        }
- 
-
-
-        move(){
-
-             //applied gravity to the vertical speed
-             this.ySpeed += this.gravity;
-
-              //update y location
-              this.yPosition += this.ySpeed;
-              ///update x location
-              this.xPosition += this.xSpeed;
-
-            if (this.yPosition >= this.height - this.radius) {// If the ball hits the bottom of the canvas.
-              this.ySpeed = this.ySpeed * -1;//change direction
-              
-                if (this.ySpeed > 0) {
-                this.ySpeed = -this.ySpeed * this.bounceDecrease;  //Inverting and reducing speed
-                }
-
-                this.yPosition = this.height - this.radius;  //adjusting position to stay within bounds
-            } 
-
-            if (this.yPosition <= this.radius) {//if ball hits right side of canvas
-              this.ySpeed = this.ySpeed * -1;//change direction
-            }
-
-            else if (this.xPosition >= this.width - this.radius) {//if ball hits left of canvas 
-              this.xSpeed = this.xSpeed * -1;//change direction
-            } 
-
-            else if (this.xPosition <= this.radius) {//if ball hits top of canvas
-              this.xSpeed = this.xSpeed * -1;//change direction
-             }
-
-            if ( this.xPosition - this.radius <= myPaddle1.xPosition + myPaddle1.width &&  //checking if the ball touches the paddle's width
-            this.yPosition >= myPaddle1.yPosition && this.yPosition <= myPaddle1.yPosition + myPaddle1.height ) {//checking if ball touches paddles height
-                this.xSpeed = this.xSpeed * -1;//change direction
-            }
-
-           if ( this.xPosition + this.radius >= myPaddle2.xPosition &&  //checking if the ball touches the paddle's width
-            this.yPosition >= myPaddle2.yPosition && this.yPosition <= myPaddle2.yPosition + myPaddle2.height ) {//checking if ball touches paddles height
-                this.xSpeed = this.xSpeed * -1;//change direction
-            }
-        }
+      constructor(yPosition, ySpeed, xPosition, xSpeed, radius) {
+        this.yPosition = yPosition;
+        this.ySpeed = ySpeed;
+        this.xPosition = xPosition;
+        this.xSpeed = xSpeed;
+        this.rotation = 0;//initializing rotation
+        this.rotationSpeed = 0.05;//initializing rotation speed
+        this.radius = radius;
+        this.height = canvas.height;
+        this.width = canvas.width;
+        this.gravity = 0.1;  //constant downward acceleration
+        this.bounceDecrease = 0.9; //kinetic energy loss of 90%
       }
 
-      myBall = new Ball(50, 1, 50, 1, 15)
-      myPaddle1 = new Paddle1(10, 10, 20, 40)
-      myPaddle2 = new Paddle2(10, 270, 20, 40)
+      draw() {
+        // Draw the ball (stroked, not filled).
+        ctx.beginPath();
+        ctx.arc(this.xPosition, this.yPosition, this.radius, 0, 2 * Math.PI);
+        ctx.stroke();
 
-      // A function to repeat every time the animation loops.
-      function repeatme() {
+        //rotation position   //rotation speed   
+        this.rotation += this.rotationSpeed;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-         
-        myBall.draw();//calling draw
-        myBall.move();//calling moves
- 
-        myPaddle1.drawPaddle1(); 
-        myPaddle2.drawPaddle2();  
-                 
-        window.requestAnimationFrame(repeatme);    
+        //calculating end point of middle line
+        var x1 = 15 * Math.cos((Math.PI / 2) + this.rotation) + this.xPosition;
+        var y1 = 15 * Math.sin((Math.PI / 2) + this.rotation) + this.yPosition;
+
+        //calculating end point of left line
+        var x2 = 15 * Math.cos((3 * Math.PI / 4) + this.rotation) + this.xPosition;
+        var y2 = 15 * Math.sin((3 * Math.PI / 4) + this.rotation) + this.yPosition;
+
+        //calculating end point of right line
+        var x3 = 15 * Math.cos((Math.PI / 4) + this.rotation) + this.xPosition;
+        var y3 = 15 * Math.sin((Math.PI / 4) + this.rotation) + this.yPosition;
+
+        //calculating end point of top middle line
+        var x4 = -15 * Math.cos((Math.PI / 2) + this.rotation) + this.xPosition;
+        var y4 = -15 * Math.sin((Math.PI / 2) + this.rotation) + this.yPosition;
+
+        ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
+        ctx.lineTo(x1, y1);//drawing line to (x1, y1)
+
+        ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
+        ctx.lineTo(x2, y2);//drawing line to (x2, y2)
+
+        ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
+        ctx.lineTo(x3, y3);//drawing line to (x3, y3)
+
+        ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
+        ctx.lineTo(x4, y4);//drawing line to (x4, y4)
+
+        ctx.stroke();//completing drawing
       }
 
-      // Get the animation going.
-      repeatme();        
-      
-      canvas.addEventListener("click", function(event) { 
 
-        //figure out local mouse coords
-        var mouse = {
-        x:event.clientX - canvasPosition.x,
-        y:event.clientY - canvasPosition.y
+
+      move() {
+
+        //applied gravity to the vertical speed
+        this.ySpeed += this.gravity;
+
+        //update y location
+        this.yPosition += this.ySpeed;
+        ///update x location
+        this.xPosition += this.xSpeed;
+
+        if (this.yPosition >= this.height - this.radius) {// If the ball hits the bottom of the canvas.
+          this.ySpeed = this.ySpeed * -1;//change direction
+
+          if (this.ySpeed > 0) {
+            this.ySpeed = -this.ySpeed * this.bounceDecrease;  //Inverting and reducing speed
+          }
+
+          this.yPosition = this.height - this.radius;  //adjusting position to stay within bounds
         }
 
-        //checking if the click is on paddle 1
-        if (mouse.x <= canvas.width / 2) {
+        if (this.yPosition <= this.radius) {//if ball hits right side of canvas
+          this.ySpeed = this.ySpeed * -1;//change direction
+        }
+
+        else if (this.xPosition >= this.width - this.radius) {//if ball hits left of canvas 
+          this.xSpeed = this.xSpeed * -1;//change direction
+        }
+
+        else if (this.xPosition <= this.radius) {//if ball hits top of canvas
+          this.xSpeed = this.xSpeed * -1;//change direction
+        }
+
+        /*   if ( this.xPosition - this.radius <= myPaddle1.xPosition + myPaddle1.width &&  //checking if the ball touches the paddle's width
+           this.yPosition >= myPaddle1.yPosition && this.yPosition <= myPaddle1.yPosition + myPaddle1.height ) {//checking if ball touches paddles height
+               this.xSpeed = this.xSpeed * -1;//change direction
+           }*/
+
+        /* if ( this.xPosition + this.radius >= myPaddle2.xPosition &&  //checking if the ball touches the paddle's width
+          this.yPosition >= myPaddle2.yPosition && this.yPosition <= myPaddle2.yPosition + myPaddle2.height ) {//checking if ball touches paddles height
+              this.xSpeed = this.xSpeed * -1;//change direction
+          }*/
+      }
+    }
+
+    myBall = new Ball(50, 1, 50, 1, 15)
+    myPaddle1 = new Paddle1(10, 10, 20, 40)
+    myPaddle2 = new Paddle2(10, 270, 20, 40)
+
+    // A function to repeat every time the animation loops.
+    function repeatme() {
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      myBall.draw();//calling draw
+      myBall.move();//calling moves
+
+      myPaddle1.drawPaddle1();
+      myPaddle2.drawPaddle2();
+
+      window.requestAnimationFrame(repeatme);
+    }
+
+    // Get the animation going.
+    repeatme();
+
+    canvas.addEventListener("click", function (event) {
+
+      //figure out local mouse coords
+      var mouse = {
+        x: event.clientX - canvasPosition.x,
+        y: event.clientY - canvasPosition.y
+      }
+
+      //checking if the click is on paddle 1
+      if (mouse.x <= canvas.width / 2) {
         myPaddle1.yPosition = mouse.y; // updating paddle 1 position based on mouse click location 
-        }
+      }
 
-         //Ensuring paddle doesn't move beyond canvas bottom
-         if (myPaddle1.yPosition + myPaddle1.height > canvas.height) {
-            myPaddle1.yPosition = canvas.height - myPaddle1.height; // Limiting paddle 1
-        }     
+      //Ensuring paddle doesn't move beyond canvas bottom
+      if (myPaddle1.yPosition + myPaddle1.height > canvas.height) {
+        myPaddle1.yPosition = canvas.height - myPaddle1.height; // Limiting paddle 1
+      }
 
-        //checking if the click is on the right side (for Paddle 2)
-        if (mouse.x > canvas.width / 2) {
+      //checking if the click is on the right side (for Paddle 2)
+      if (mouse.x > canvas.width / 2) {
         myPaddle2.yPosition = mouse.y; // updating paddle 2 position based on mouse click location
-        }
+      }
 
-        if (myPaddle2.yPosition + myPaddle2.height > canvas.height) {
-            myPaddle2.yPosition = canvas.height - myPaddle2.height; // Limiting paddle 2
-        }
+      if (myPaddle2.yPosition + myPaddle2.height > canvas.height) {
+        myPaddle2.yPosition = canvas.height - myPaddle2.height; // Limiting paddle 2
+      }
 
-        noClicks += 1;
-        console.log(noClicks);
-        console.log(event);
-        });
-    
-
-        // Paddle control with keypresses
-        document.body.addEventListener('keydown', function (e) {
-        switch (e.keyCode) {
-            
-            //up arrow
-            case 38:
-                myPaddle1.yPosition -= 10;
-                console.log("Paddle left moved up");
-                if (myPaddle1.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
-                    myPaddle1.yPosition = 0;
-                }
-            break;
-            
-            //down arrow
-            case 40:
-                myPaddle1.yPosition += 10;
-                console.log("Paddle left moved down");
-                if (myPaddle1.yPosition + myPaddle1.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
-                myPaddle1.yPosition = canvas.height - myPaddle1.height; 
-                }
-            break;
-            
-            //left arrow
-            case 37:
-                myPaddle2.yPosition -= 10;
-                console.log("Paddle right moved up");
-                if (myPaddle2.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
-                    myPaddle2.yPosition = 0;
-                }
-            break;
-            
-            //right arrow
-            case 39:
-                myPaddle2.yPosition += 10;
-                console.log("Paddle right moved down");
-                if (myPaddle2.yPosition + myPaddle2.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
-                myPaddle2.yPosition = canvas.height - myPaddle2.height; 
-                }
-            break;
-            
-            //'A' key
-            case 65:
-            myBall.rotationSpeed += 0.02; // increase rotation speed of symbol
-            console.log("Balls rotation speed has increased");
-            break;
-
-            //'S' key
-            case 83:
-            myBall.rotationSpeed -= 0.02; // decrease rotation speed iof symbol
-
-            console.log("Balls rotation speed has decreased");
-            break;
-
-        }
+      noClicks += 1;
+      console.log(noClicks);
+      console.log(event);
     });
 
-    </script>
 
-  </body>
+    // Paddle control with keypresses
+    document.body.addEventListener('keydown', function (e) {
+      switch (e.keyCode) {
+
+        //up arrow
+        case 38:
+          myPaddle1.yPosition -= 10;
+          console.log("Paddle left moved up");
+          if (myPaddle1.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
+            myPaddle1.yPosition = 0;
+          }
+          break;
+
+        //down arrow
+        case 40:
+          myPaddle1.yPosition += 10;
+          console.log("Paddle left moved down");
+          if (myPaddle1.yPosition + myPaddle1.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
+            myPaddle1.yPosition = canvas.height - myPaddle1.height;
+          }
+          break;
+
+        //left arrow
+        case 37:
+          myPaddle2.yPosition -= 10;
+          console.log("Paddle right moved up");
+          if (myPaddle2.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
+            myPaddle2.yPosition = 0;
+          }
+          break;
+
+        //right arrow
+        case 39:
+          myPaddle2.yPosition += 10;
+          console.log("Paddle right moved down");
+          if (myPaddle2.yPosition + myPaddle2.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
+            myPaddle2.yPosition = canvas.height - myPaddle2.height;
+          }
+          break;
+
+        //'A' key
+        case 65:
+          myBall.rotationSpeed += 0.02; // increase rotation speed of symbol
+          console.log("Balls rotation speed has increased");
+          break;
+
+        //'S' key
+        case 83:
+          myBall.rotationSpeed -= 0.02; // decrease rotation speed iof symbol
+
+          console.log("Balls rotation speed has decreased");
+          break;
+
+      }
+    });
+
+  </script>
+
+</body>
 
 </html>

@@ -34,21 +34,24 @@
 
       class Ball{
 
-        constructor(yPosition, ySpeed, xPosition, xSpeed){
+        constructor(yPosition, ySpeed, xPosition, xSpeed, radius){
             this.yPosition = yPosition;
             this.ySpeed = ySpeed;
             this.xPosition = xPosition;
             this.xSpeed = xSpeed;
             this.rotation = 0;//initializing rotation
             this.rotationSpeed = 0.05;//initializing rotation speed
+            this.radius = radius;
+            this.height = canvas.height;
+            this.width = canvas.width;
+
         }
 
         draw(){
             // Draw the ball (stroked, not filled).
             ctx.beginPath();
-            ctx.arc(this.xPosition, this.yPosition, 15, 0, 2 * Math.PI);
+            ctx.arc(this.xPosition, this.yPosition, this.radius, 0, 2 * Math.PI);
             ctx.stroke();
-
   
             //rotation position   //rotation speed   
             this.rotation += this.rotationSpeed;
@@ -81,45 +84,43 @@
             ctx.moveTo(this.xPosition, this.yPosition);//starting line from centre of ball
             ctx.lineTo(x4, y4);//drawing line to (x4, y4)
 
-       
-
             ctx.stroke();//completing drawing
         }
 
         move(){
-            ///update y location
-            this.yPosition += this.ySpeed;
-            ///update x location
-            this.xPosition += this.xSpeed;
-            
-          if (this.yPosition == 190) {// If the ball hits the bottom of the canvas.
-            this.ySpeed = this.ySpeed * -1;//change direction
-            this.rotationSpeed = this.rotationSpeed *-1;//cange rotation
-          } 
+              //update y location
+              this.yPosition += this.ySpeed;
+              ///update x location
+              this.xPosition += this.xSpeed;
+              
+            if (this.yPosition >= this.height - this.radius) {// If the ball hits the bottom of the canvas.
+              this.ySpeed = this.ySpeed * -1;//change direction
+              this.rotationSpeed = this.rotationSpeed *-1;//cange rotation
+            } 
 
-          if (this.yPosition == 10) {//if ball hits right side of canvas
-            this.ySpeed = this.ySpeed * -1;//change direction
-            this.rotationSpeed = this.rotationSpeed *-1;//change rotation
-          }
+            if (this.yPosition <= this.radius) {//if ball hits right side of canvas
+              this.ySpeed = this.ySpeed * -1;//change direction
+              this.rotationSpeed = this.rotationSpeed *-1;//change rotation
+            }
 
-          else if (this.xPosition == 290) {//if ball hits left of canvas 
-            this.xSpeed = this.xSpeed * -1;//change direction
-            this.rotationSpeed = this.rotationSpeed *-1;//change rotation
-          } 
+            else if (this.xPosition >= this.width - this.radius) {//if ball hits left of canvas 
+              this.xSpeed = this.xSpeed * -1;//change direction
+              this.rotationSpeed = this.rotationSpeed *-1;//change rotation
+            } 
 
-          else if (this.xPosition == 10) {//if ball hits top of canvas
-            this.xSpeed = this.xSpeed * -1;//change direction
-            this.rotationSpeed = this.rotationSpeed *-1;//change rotation
+            else if (this.xPosition <= this.radius) {//if ball hits top of canvas
+              this.xSpeed = this.xSpeed * -1;//change direction
+              this.rotationSpeed = this.rotationSpeed *-1;//change rotation
           }
         }
       }
 
-      myBall = new Ball(10, 1, 10, 1)
+      myBall = new Ball(50, 1, 50, 1, 15)
 
       // A function to repeat every time the animation loops.
       function repeatme() {
 
-       ctx.clearRect(0, 0, 300, 200);
+       ctx.clearRect(0, 0, canvas.width, canvas.height);
          
         myBall.draw();//calling draw
         myBall.move();//calling move
