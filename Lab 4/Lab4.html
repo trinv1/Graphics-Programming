@@ -37,28 +37,7 @@
 
     var noClicks = 0;
 
-    class Paddle1 {
-      constructor(yPosition, xPosition, width, height) {
-        this.yPosition = yPosition;
-        this.xPosition = xPosition;
-        this.width = width;
-        this.height = height;
-      }
-
-      drawPaddle1() {
-
-        ctx.beginPath();
-        ctx.fillStyle = "rgb(255, 0, 0)";
-        ctx.fillRect(this.xPosition, this.yPosition, this.width, this.height);//filled rectangle
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(this.xPosition, this.yPosition, this.width, this.height);
-        ctx.lineWidth = 3;
-
-      }
-
-    }
-
-    class Paddle2 {
+    class Paddle {
       constructor(yPosition, xPosition, width, height) {
         this.yPosition = yPosition;
         this.xPosition = xPosition;
@@ -66,7 +45,7 @@
         this.height = height
       }
 
-      drawPaddle2() {
+      draw() {
 
         ctx.beginPath();
         ctx.fillStyle = "rgb(255, 0, 0)";
@@ -193,8 +172,8 @@
     }
 
     myBall = new Ball(50, 1, 50, 1, 15)
-    myPaddle1 = new Paddle1(10, 10, 20, 40)
-    myPaddle2 = new Paddle2(10, 270, 20, 40)
+    myPaddle1 = new Paddle(10, 10, 20, 40)
+    myPaddle2 = new Paddle(10, 270, 20, 40)
 
     // A function to repeat every time the animation loops.
     function repeatme() {
@@ -204,8 +183,8 @@
       myBall.draw();//calling draw
       myBall.move();//calling moves
 
-      myPaddle1.drawPaddle1();
-      myPaddle2.drawPaddle2();
+      myPaddle1.draw();
+      myPaddle2.draw();
 
       window.requestAnimationFrame(repeatme);
     }
