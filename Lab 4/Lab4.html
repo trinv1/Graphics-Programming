@@ -186,10 +186,26 @@
       myPaddle2.draw();
 
       window.requestAnimationFrame(repeatme);
+
+      checkCollision(myBall, myPaddle1);
     }
 
     // Get the animation going.
     repeatme();
+      
+   function checkCollision(Ball, Paddle){//function to check collision
+    var dist = Math.sqrt(Math.pow(myPaddle1.xPosition - myBall.xPosition,2) + Math.pow(myPaddle1.yPosition - myBall.yPosition,2));
+    console.log(dist);
+    
+    if(dist < myBall.radius + myPaddle1.radius){
+        //collision is true 
+        //increment the score for paddle 1
+        //display a msg to screen>
+       // myPaddle1.ySpeed = myPaddle1.ySpeed * -1;
+       // myPaddle2.ySpeed = myPaddle2.ySpeed * -1;
+        console.log("COLLISION")
+    }
+    }
 
     canvas.addEventListener("click", function (event) {
 
