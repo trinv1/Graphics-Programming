@@ -158,15 +158,6 @@
           this.xSpeed = this.xSpeed * -1;//change direction
         }
 
-        /*   if ( this.xPosition - this.radius <= myPaddle1.xPosition + myPaddle1.width &&  //checking if the ball touches the paddle's width
-           this.yPosition >= myPaddle1.yPosition && this.yPosition <= myPaddle1.yPosition + myPaddle1.height ) {//checking if ball touches paddles height
-               this.xSpeed = this.xSpeed * -1;//change direction
-           }*/
-
-        /* if ( this.xPosition + this.radius >= myPaddle2.xPosition &&  //checking if the ball touches the paddle's width
-          this.yPosition >= myPaddle2.yPosition && this.yPosition <= myPaddle2.yPosition + myPaddle2.height ) {//checking if ball touches paddles height
-              this.xSpeed = this.xSpeed * -1;//change direction
-          }*/
       }
     }
 
@@ -195,26 +186,34 @@
     // Get the animation going.
     repeatme();
 
+    function textWhenCollision(){//function to show text when collision occurs 
+
+      ctx.font = "10px Arial"; 
+      ctx.fillStyle = "black"; 
+      ctx.fillText("COLLISION", 120, 50);
+    
+    }
    
    function checkCollision(Ball, Paddle){//function to check collision
+
     var dist = Math.sqrt(Math.pow(myPaddle1.xPosition - myBall.xPosition,2) + Math.pow(myPaddle1.yPosition - myBall.yPosition,2));
     var dist2= Math.sqrt(Math.pow(myPaddle2.xPosition - myBall.xPosition,2) + Math.pow(myPaddle2.yPosition - myBall.yPosition,2));
-
-    // console.log(dist);
     
-    if(dist < myBall.radius + myPaddle1.radius){
-        //collision is true 
+    if(dist < myBall.radius + myPaddle1.radius){//if collision is true
         //increment the score for paddle 1
-        //display a msg to screen>
+
+        textWhenCollision();//displays message to screen
+
        // myPaddle1.ySpeed = myPaddle1.ySpeed * -1;
        // myPaddle2.ySpeed = myPaddle2.ySpeed * -1;
         console.log("COLLISION")
     }
 
-    else if(dist2 < myBall.radius + myPaddle2.radius){
-        //collision is true 
+    else if(dist2 < myBall.radius + myPaddle2.radius){//if collision it true
         //increment the score for paddle 1
-        //display a msg to screen>
+       
+        textWhenCollision();//displays message to screen
+
        // myPaddle1.ySpeed = myPaddle1.ySpeed * -1;
        // myPaddle2.ySpeed = myPaddle2.ySpeed * -1;
         console.log("COLLISION")
