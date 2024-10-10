@@ -128,9 +128,6 @@
 
       move() {
 
-        //applied gravity to the vertical speed
-        this.ySpeed += this.gravity;
-
         //update y location
         this.yPosition += this.ySpeed;
         ///update x location
@@ -138,10 +135,6 @@
 
         if (this.yPosition >= this.height - this.radius) {// If the ball hits the bottom of the canvas.
           this.ySpeed = this.ySpeed * -1;//change direction
-
-          if (this.ySpeed > 0) {
-            this.ySpeed = -this.ySpeed * this.bounceDecrease;  //Inverting and reducing speed
-          }
 
           this.yPosition = this.height - this.radius;  //adjusting position to stay within bounds
         }
@@ -204,15 +197,20 @@
 
         textWhenCollision();//displays message to screen
 
-       // myPaddle1.ySpeed = myPaddle1.ySpeed * -1;
+        myBall.ySpeed = myBall.ySpeed * -1;
+        myBall.xSpeed = myBall.xSpeed * -1;
+
+        
        // myPaddle2.ySpeed = myPaddle2.ySpeed * -1;
         console.log("COLLISION")
     }
+
 
     else if(dist2 < myBall.radius + myPaddle2.radius){//if collision it true
         //increment the score for paddle 1
        
         textWhenCollision();//displays message to screen
+        myBall.ySpeed = myBall.ySpeed * -1;
 
        // myPaddle1.ySpeed = myPaddle1.ySpeed * -1;
        // myPaddle2.ySpeed = myPaddle2.ySpeed * -1;
