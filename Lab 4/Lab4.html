@@ -50,9 +50,12 @@
 
       draw() {
 
-          // Draw the ball (stroked, not filled).
-       ctx.beginPath();
+       // Draw the ball (stroked, not filled).
+       ctx.fillStyle = "rgb(0, 0, 0)";
+        ctx.beginPath();
         ctx.arc(this.xPosition, this.yPosition, this.radius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.strokeStyle = "black";
         ctx.stroke();
 
       }
@@ -88,8 +91,12 @@
 
       draw() {
         // Draw the ball (stroked, not filled).
+        ctx.fillStyle = "rgb(255, 0, 0)";
         ctx.beginPath();
         ctx.arc(this.xPosition, this.yPosition, this.radius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth=2;
         ctx.stroke();
 
         //rotation position   //rotation speed   
