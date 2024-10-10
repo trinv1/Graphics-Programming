@@ -38,13 +38,15 @@
     var noClicks = 0;
 
     class Paddle {
-      constructor(yPosition, xPosition, radius) {
-        this.yPosition = yPosition;
-        this.xPosition = xPosition;
-        //this.width = width;
-        //this.height = height
-        this.radius = radius;
-      }
+        constructor (xPosition, yPosition, ySpeed, xSpeed, radius)
+        {
+          this.xPosition = xPosition;
+          this.yPosition = yPosition;
+          this.xSpeed = xSpeed;
+          this.ySpeed = ySpeed;
+          this.radius = radius;
+        }
+
 
       draw() {
 
@@ -154,9 +156,9 @@
       }
     }
 
-    myBall = new Ball(50, 1, 50, 1, 15)
-    myPaddle1 = new Paddle(50, 30, 15)
-    myPaddle2 = new Paddle(50, 270, 15)
+    myBall = new Ball(canvasPosition.y, 1, 50, 1, 15)
+    myPaddle1 = new Paddle(30, 50, 1, 1, 15)
+    myPaddle2 = new Paddle(270, 50, 1, 1, 15)
 
     // A function to repeat every time the animation loops.
     function repeatme() {
@@ -196,8 +198,8 @@
 
         textWhenCollision();//displays message to screen
 
-        //myBall.ySpeed = myBall.ySpeed * -1;
-        //myBall.xSpeed = myBall.xSpeed * -1;
+        ball.ySpeed = ball.ySpeed * -1;
+        ball.xSpeed = myBall.xSpeed * -1;
 
         
        // myPaddle2.ySpeed = myPaddle2.ySpeed * -1;
