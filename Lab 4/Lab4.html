@@ -12,9 +12,14 @@
     }
 
     canvas {
+      display: block;
       border: black;
       border-style: solid;
     }
+
+    #canvas-for-score {
+    border: none; /*removing border for canvas 2*/
+  }
   </style>
 
 </head>
@@ -26,6 +31,7 @@
   <script type="text/javascript">
     // Gets a handle to the element with id canvasOne.
     var canvas = document.getElementById("canvas-for-ball");
+
     // Get a 2D context for the canvas.
     var ctx = canvas.getContext("2d");
 
@@ -34,6 +40,7 @@
       x: canvas.offsetLeft,
       y: canvas.offsetTop
     };
+
 
     var noClicks = 0;
 
@@ -182,11 +189,13 @@
 
       checkCollision(myBall, myPaddle1)
       checkCollision(myBall, myPaddle2)
+      //score();
       
     }
 
     // Get the animation going.
     repeatme();
+
 
     function textWhenCollision(){//function to show text when collision occurs 
 
@@ -257,8 +266,8 @@
         case 38:
           myPaddle1.yPosition -= 10;
           console.log("Paddle left moved up");
-          if (myPaddle1.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
-            myPaddle1.yPosition = 0;
+          if (myPaddle1.yPosition - myPaddle1.radius < 0) { // Ensuring paddle doesn't go above the canvas
+          myPaddle1.yPosition = myPaddle1.radius;
           }
           break;
 
@@ -266,8 +275,8 @@
         case 40:
           myPaddle1.yPosition += 10;
           console.log("Paddle left moved down");
-          if (myPaddle1.yPosition + myPaddle1.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
-            myPaddle1.yPosition = canvas.height - myPaddle1.height;
+          if (myPaddle1.yPosition + myPaddle1.radius > canvas.height) { // Ensuring paddle doesn't go below the canvas
+            myPaddle1.yPosition = canvas.height - myPaddle1.radius;
           }
           break;
 
@@ -275,8 +284,8 @@
         case 37:
           myPaddle2.yPosition -= 10;
           console.log("Paddle right moved up");
-          if (myPaddle2.yPosition < 0) { // Ensuring paddle doesn't go above the canvas
-            myPaddle2.yPosition = 0;
+          if (myPaddle2.yPosition - myPaddle2.radius < 0) { // Ensuring paddle doesn't go above the canvas
+          myPaddle2.yPosition = myPaddle2.radius;
           }
           break;
 
@@ -284,8 +293,8 @@
         case 39:
           myPaddle2.yPosition += 10;
           console.log("Paddle right moved down");
-          if (myPaddle2.yPosition + myPaddle2.height > canvas.height) { // Ensuring paddle doesn't go below the canvas
-            myPaddle2.yPosition = canvas.height - myPaddle2.height;
+          if (myPaddle2.yPosition + myPaddle2.radius > canvas.height) { // Ensuring paddle doesn't go below the canvas
+            myPaddle2.yPosition = canvas.height - myPaddle2.radius;
           }
           break;
 
