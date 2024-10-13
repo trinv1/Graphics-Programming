@@ -52,7 +52,6 @@
     let score1 = 0; // Initializing the score variable
     let score2 = 0; // Initializing the score variable
 
-
     var canvasPosition = //declaring canvas position
     {
       x: canvas.offsetLeft,
@@ -157,9 +156,7 @@
 
         ctx.stroke();//completing drawing
       }
-
-
-
+      
       move() {
 
         //update y location
@@ -187,8 +184,71 @@
 
       }
     }
+    
+    function textWhenCollision(){//function to show text when collision occurs 
 
-    myBall = new Ball(canvasPosition.y, 1, 50, 1, 15)
+    ctx.font = "10px Arial"; 
+    ctx.fillStyle = "black"; 
+    ctx.fillText("COLLISION", 120, 50);
+
+    }
+
+    let lastHitPaddle1 = false;//flag to track if paddle 1 was last hit
+    let lastHitPaddle2 = false;//flag to track if paddle 1 was last hit
+
+
+    function decrementScore(){// decrement score function
+
+    if(lastHitPaddle1 && myBall.xPosition <= myBall.radius){
+    // Decrement score if the ball hits wall behind it
+
+      score1--;
+      scoreElement.textContent = `Score 1: ${score1}`;
+      lastHitPaddle1 = false; // reset after decrementing
+
+    }
+
+    if(myBall.xPosition >= canvas.width - myBall.radius && lastHitPaddle2){
+    // Decrement score if the ball hits wall behind it
+
+      score2--;
+      scoreElement2.textContent = `Score 2: ${score2}`;
+      lastHitPaddle2 = false; // reset after decrementing
+
+    }
+    }
+    function checkCollision(ball, paddle, paddleNum){//function to check collision
+
+    var dist = Math.sqrt(Math.pow(paddle.xPosition - ball.xPosition,2) + Math.pow(paddle.yPosition - ball.yPosition,2));
+
+    if(dist < ball.radius + paddle.radius){//if collision is true
+      //increment the score for paddle 1
+
+      textWhenCollision();//displays message to screen
+
+      ball.ySpeed = ball.ySpeed * -1;
+      ball.xSpeed = myBall.xSpeed * -1;
+
+      // Checking which paddle was hit and update scores
+      if (paddleNum === 1) {
+          score1++;
+          scoreElement.textContent = `Score 1: ${score1}`; //Updating paddle 1 score
+        lastHitPaddle1 = true; //set last hit to paddle 1
+        lastHitPaddle2 = false; // reset paddle 2 flag
+        }
+
+      if (paddleNum === 2) {
+          score2++;
+          scoreElement2.textContent = `Score 2: ${score2}`; //Updating paddle 2 score
+          lastHitPaddle2 = true;//set last hit to paddle 2
+          lastHitPaddle1 = false; // reset paddle 1 flag
+        }
+
+      console.log("COLLISION")
+    } 
+    }
+
+    myBall = new Ball(canvasPosition.y, 3, 50, 3, 15)
     myPaddle1 = new Paddle(30, 50, 1, 1, 15)
     myPaddle2 = new Paddle(270, 50, 1, 1, 15)
 
@@ -207,44 +267,13 @@
 
       checkCollision(myBall, myPaddle1, 1);
       checkCollision(myBall, myPaddle2, 2);
+
+      decrementScore();
       
     }
 
     // Get the animation going.
     repeatme();
-
-
-    function textWhenCollision(){//function to show text when collision occurs 
-
-      ctx.font = "10px Arial"; 
-      ctx.fillStyle = "black"; 
-      ctx.fillText("COLLISION", 120, 50);
-    
-    }
-   
-   function checkCollision(ball, paddle, paddleNum){//function to check collision
-
-    var dist = Math.sqrt(Math.pow(paddle.xPosition - ball.xPosition,2) + Math.pow(paddle.yPosition - ball.yPosition,2));
-    
-    if(dist < ball.radius + paddle.radius){//if collision is true
-        //increment the score for paddle 1
-
-        textWhenCollision();//displays message to screen
-
-        ball.ySpeed = ball.ySpeed * -1;
-        ball.xSpeed = myBall.xSpeed * -1;
-
-        // Checking which paddle was hit and update scores
-        if (paddleNum == 1) {
-            score1++;
-            scoreElement.textContent = `Score 1: ${score1}`; //Updating paddle 1 score
-        } else if (paddleNum == 2) {
-            score2++;
-            scoreElement2.textContent = `Score 2: ${score2}`; //Updating paddle 2 score
-        }
-
-        console.log("COLLISION")
-    } 
 
     canvas.addEventListener("click", function (event) {
 
