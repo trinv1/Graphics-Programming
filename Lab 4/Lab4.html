@@ -37,7 +37,7 @@
   <canvas id="canvas-for-ball" width="300" height="200"></canvas>
   <div id="score1">Score 1: 0</div> <!--Score element-->
   <div id="score2">Score 2: 0</div> <!--Score element-->
-
+  <div id="collision"></div> <!--Collision element-->
 
   <script type="text/javascript">
     // Gets a handle to the element with id canvasOne.
@@ -48,6 +48,8 @@
 
     const scoreElement = document.getElementById("score1");
     const scoreElement2 = document.getElementById("score2");
+    const collisionElement = document.getElementById("collision");
+
 
     let score1 = 0; // Initializing the score variable
     let score2 = 0; // Initializing the score variable
@@ -156,7 +158,7 @@
 
         ctx.stroke();//completing drawing
       }
-      
+
       move() {
 
         //update y location
@@ -186,16 +188,18 @@
     }
     
     function textWhenCollision(){//function to show text when collision occurs 
+   
+    collisionElement.textContent = `Collision`; 
 
-    ctx.font = "10px Arial"; 
-    ctx.fillStyle = "black"; 
-    ctx.fillText("COLLISION", 120, 50);
-
+      // Setting timeout to clear message after 750 milliseconds
+      setTimeout(function () {
+        document.getElementById("collision").innerText = '';
+      }, 750);
     }
+  
 
     let lastHitPaddle1 = false;//flag to track if paddle 1 was last hit
-    let lastHitPaddle2 = false;//flag to track if paddle 1 was last hit
-
+    let lastHitPaddle2 = false;//flag to track if paddle 2 was last hit
 
     function decrementScore(){// decrement score function
 
@@ -248,9 +252,9 @@
     } 
     }
 
-    myBall = new Ball(canvasPosition.y, 3, 50, 3, 15)
-    myPaddle1 = new Paddle(30, 50, 1, 1, 15)
-    myPaddle2 = new Paddle(270, 50, 1, 1, 15)
+    myBall = new Ball(canvasPosition.y, 2, 50, 2, 15)
+    myPaddle1 = new Paddle(20, 50, 1, 1, 15)
+    myPaddle2 = new Paddle(280, 50, 1, 1, 15)
 
     // A function to repeat every time the animation loops.
     function repeatme() {
