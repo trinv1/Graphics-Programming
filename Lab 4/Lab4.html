@@ -250,6 +250,7 @@
 
       console.log("COLLISION")
     } 
+
     }
 
     myBall = new Ball(canvasPosition.y, 2, 50, 2, 15)
@@ -286,6 +287,11 @@
       for (var i = 0; i < matchBalls.length; i++) {
         matchBalls[i].draw();
         matchBalls[i].move();
+
+        checkCollision(matchBalls[i], myPaddle1, 1);  
+        checkCollision(matchBalls[i], myPaddle2, 2);  
+
+        console.log(matchBalls);
       }
 
       myPaddle1.draw();
@@ -294,7 +300,7 @@
       window.requestAnimationFrame(repeatme);
 
       checkCollision(myBall, myPaddle1, 1);
-      checkCollision(myBall, myPaddle2, 2);
+      checkCollision(myBall, myPaddle2, 2);  
 
       decrementScore();
       
