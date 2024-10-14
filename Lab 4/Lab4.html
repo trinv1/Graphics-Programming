@@ -326,6 +326,29 @@
     // Get the animation going.
     repeatme();
 
+    canvas.addEventListener("click", function(event) {
+      //locating local mouse coords
+    var mouse = {
+        x: event.clientX - canvasPosition.x,
+        y: event.clientY - canvasPosition.y
+    };
+
+    //looping through matchBalls in reverse order 
+    for (var i = matchBalls.length - 1; i >= 0; i--) {
+        var ball = matchBalls[i];
+        
+        //calculating distance between mouse and ball
+        var dist = Math.sqrt(Math.pow(mouse.x - ball.xPosition, 2) + Math.pow(mouse.y - ball.yPosition, 2));     
+
+        //checking if the click is within the ball's radius
+        if (dist < ball.radius) {
+            //remove the ball from the array
+            matchBalls.splice(i, 1);
+            break; //exiting the loop 
+        }
+    }
+});
+
     canvas.addEventListener("click", function (event) {
 
       //figure out local mouse coords
