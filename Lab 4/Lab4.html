@@ -186,7 +186,7 @@
 
       }
     }
-    
+
     function textWhenCollision(){//function to show text when collision occurs 
    
     collisionElement.textContent = `Collision`; 
@@ -256,6 +256,24 @@
     myPaddle1 = new Paddle(20, 50, 1, 1, 15)
     myPaddle2 = new Paddle(280, 50, 1, 1, 15)
 
+    var matchBalls=[]; //initializing empty array for match balls
+
+    canvas.addEventListener("dblclick", function (event) {
+      //figure out local mouse coords
+      var mouse = {
+        x: event.clientX - canvasPosition.x,
+        y: event.clientY - canvasPosition.y
+      }
+
+      //creating a new ball at double click position
+      var newBall = new Ball(mouse.y, 2, mouse.x, 2, 15);
+       
+      //adding the new ball to the matchBalls array
+      matchBalls.push(newBall);
+
+      console.log(matchBalls);
+    });
+
     // A function to repeat every time the animation loops.
     function repeatme() {
 
@@ -263,6 +281,12 @@
 
       myBall.draw();//calling draw
       myBall.move();//calling moves
+
+          // creating match balls
+      for (var i = 0; i < matchBalls.length; i++) {
+        matchBalls[i].draw();
+        matchBalls[i].move();
+      }
 
       myPaddle1.draw();
       myPaddle2.draw();
