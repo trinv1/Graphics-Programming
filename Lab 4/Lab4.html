@@ -253,6 +253,19 @@
 
     }
 
+    function ballCollision(ball, ball2){//fucntion to check collision between balls
+      var dist = Math.sqrt(Math.pow(ball.xPosition - ball2.xPosition,2) + Math.pow(ball.yPosition - ball2.yPosition,2));
+
+      if(dist < ball.radius + ball2.radius){//if collision is true
+
+      ball.ySpeed = ball.ySpeed * -1;
+      ball.xSpeed = ball.xSpeed * -1;
+
+      ball2.ySpeed = ball2.ySpeed * -1;
+      ball2.xSpeed = ball2.xSpeed * -1;
+    }
+  }
+
     myBall = new Ball(canvasPosition.y, 2, 50, 2, 15)
     myPaddle1 = new Paddle(20, 50, 1, 1, 15)
     myPaddle2 = new Paddle(280, 50, 1, 1, 15)
@@ -288,10 +301,14 @@
         matchBalls[i].draw();
         matchBalls[i].move();
 
-        checkCollision(matchBalls[i], myPaddle1, 1);  
-        checkCollision(matchBalls[i], myPaddle2, 2);  
+        ballCollision(matchBalls[i], myBall); // Check collision with the main ball
+        checkCollision(matchBalls[i], myPaddle1, 1);  //check collision with paddles
+        checkCollision(matchBalls[i], myPaddle2, 2); 
 
-        console.log(matchBalls);
+        for (var j = i + 1; j < matchBalls.length; j++) {
+        ballCollision(matchBalls[i], matchBalls[j]); // Check collision between matchBalls
+    }
+
       }
 
       myPaddle1.draw();
