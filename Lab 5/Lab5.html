@@ -32,11 +32,13 @@
         const geometrySphere = new THREE.SphereGeometry( 15, 32, 16);
         const materialSphere = new THREE.MeshLambertMaterial( { color: 0xffff00, wireframe: false } );
         const sphere = new THREE.Mesh ( geometrySphere, materialSphere );
+        //sphere.position.x+;
+        //sphere.position.y -= 0.01;
         scene.add( sphere );//add sphere to scene
 
         //Plane
-        const geometryPlane = new THREE.PlaneGeometry( 10, 10 );
-        const planeMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        const geometryPlane = new THREE.PlaneGeometry( 25, 25 );
+        const planeMaterial = new THREE.MeshLambertMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         const plane = new THREE.Mesh( geometryPlane, planeMaterial );
         plane.position.y = -20; //positioning  the plane below the sphere  
         plane.rotation.x += 20; //made plane flat under sphere
@@ -55,6 +57,7 @@
         var repeatMe = function(){// function to rotate sphere
             sphere.rotation.z += 0.01;
             sphere.rotation.y += 0.01; 
+            sphere.rotation.x += 0.01;
             renderer.render(scene, camera);
             requestAnimationFrame(repeatMe);
         }
