@@ -47,6 +47,11 @@
         light.position.set( 50, 50, 50);
         scene.add( light );
 
+        var spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(1, 0.5, 1);
+        scene.add(spotLight);
+
+
         var repeatMe = function(){// function to rotate sphere
             sphere.rotation.z += 0.01;
             sphere.rotation.y += 0.01; 
