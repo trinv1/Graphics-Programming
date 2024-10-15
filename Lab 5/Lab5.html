@@ -30,7 +30,7 @@
 
         //Sphere
         const geometrySphere = new THREE.SphereGeometry( 15, 32, 16);
-        const materialSphere = new THREE.MeshLambertMaterial( { color: 0xffff00, wireframe: true } );
+        const materialSphere = new THREE.MeshLambertMaterial( { color: 0xffff00, wireframe: false } );
         const sphere = new THREE.Mesh ( geometrySphere, materialSphere );
         scene.add( sphere );//add sphere to scene
 
