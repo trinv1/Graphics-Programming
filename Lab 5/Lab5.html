@@ -32,8 +32,7 @@
         const geometrySphere = new THREE.SphereGeometry( 15, 32, 16);
         const materialSphere = new THREE.MeshLambertMaterial( { color: 0xffff00, wireframe: false } );
         const sphere = new THREE.Mesh ( geometrySphere, materialSphere );
-        //sphere.position.x+;
-        //sphere.position.y -= 0.01;
+        
         scene.add( sphere );//add sphere to scene
 
         //Plane
@@ -53,11 +52,23 @@
         spotLight.position.set(1, 0.5, 1);
         scene.add(spotLight);
 
+        //movement variables
+        let speed = 0.1; 
+        let direction = 1; // 1 for right, -1 for left
 
         var repeatMe = function(){// function to rotate sphere
             sphere.rotation.z += 0.01;
             sphere.rotation.y += 0.01; 
             sphere.rotation.x += 0.01;
+
+            sphere.position.x += speed * direction;//moving sphere left and right
+            
+            //change direction if it reaches a certain boundary
+            if (sphere.position.x > 5 || sphere.position.x < -5) {
+                direction *= -1; //reversing the direction
+            }
+
+
             renderer.render(scene, camera);
             requestAnimationFrame(repeatMe);
         }
