@@ -19,12 +19,20 @@
 
         // Create a camera with specified properties.
         var camera = new THREE.PerspectiveCamera(76, window.innerWidth / window.innerHeight, 0.1, 1000);
+
         // Set camera position
+        camera.position.z = 40;
 
         // Implement renderer - Create a WebGL renderer for rendering the scene.
         var renderer = new THREE.WebGLRenderer();
 
         scene.add( sphere );//add sphere to scene
+
+        var repeatMe = function(){// function to rotate sphere
+            sphere.rotation.z += 0.01;
+            sphere.rotation.y += 0.01; 
+        }
+
         
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
