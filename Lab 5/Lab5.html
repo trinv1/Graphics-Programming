@@ -15,15 +15,19 @@
 
 class Sphere {//Class for sphere
         
-        constructor(scene, xPosition, yPosition, speed, direction, topBoundary, bottomBoundary){//Constructor with parameters
-            this.geometrySphere = new THREE.SphereGeometry( 15, 32, 16);
-            this.materialSphere = new THREE.MeshLambertMaterial( { color: 0xffff00, wireframe: false } );
+        constructor(scene, xPosition, yPosition, zPosition, ySpeed, xSpeed, zSpeed, radius, topBoundary, bottomBoundary, colour){//Constructor with parameters
+            this.radius = radius;
+            this.geometrySphere = new THREE.SphereGeometry( this.radius, 32, 16);
+            this.materialSphere = new THREE.MeshLambertMaterial( { color: colour, wireframe: false } );
             this.xPosition = xPosition;
             this.yPosition = yPosition;
+            this.zPosition = zPosition;
             this.sphere = new THREE.Mesh ( this.geometrySphere, this.materialSphere );
             this.sphere.castShadow = true; //enable shadow casting
-            this.speed = speed;
-            this.direction = direction;
+            this.ySpeed = ySpeed;
+            this.xSpeed = xSpeed;
+            this.zSpeed = zSpeed;
+            this.sphere.position.set(xPosition, yPosition, zPosition);
             this.topBoundary = topBoundary;
             this.bottomBoundary = bottomBoundary;
             
@@ -31,17 +35,22 @@ class Sphere {//Class for sphere
         }
 
         move(){//Function to move sphere
+
+            // Update positions
+            this.sphere.position.x += this.xSpeed;
+            this.sphere.position.y += this.ySpeed;
+            this.sphere.position.z += this.zSpeed;
             
             this.sphere.rotation.z += 0.01;
             this.sphere.rotation.y += 0.01; 
             this.sphere.rotation.x += 0.01;
-
-            this.sphere.position.y += this.speed * this.direction;//moving sphere left and right
             
-            //Change direction if it reaches top of scene
-            if (this.sphere.position.y > this.topBoundary || this.sphere.position.y < plane.position.x - 12) {
-                this.direction *= -1; //reversing the direction
-            }
+             // Boundary checks for vertical movement
+        if (this.sphere.position.y >= this.topBoundary - this.radius 
+        || this.sphere.position.y <= plane.position.y + this.radius) {
+            this.ySpeed *= -1; // Reverse direction 
+        }
+            
         }
 
     }
@@ -97,13 +106,33 @@ class Sphere {//Class for sphere
         spotLight.position.set(100, 1000, 100);
         scene.add(spotLight);
 
-        s1= new Sphere(scene , 0, 20, 0.2, 1, 30);
-        s2= new Sphere(scene , 0, 0, 0.1, -1, 11);
+        s1 = new Sphere(scene, -20, 0, 0, 0.5, 0.2, 0.1, 15, 50, -30, 0xff0000);
+        s2 = new Sphere(scene, 20, -10, 0, -0.5, -0.2, 0.1, 15, 50, -30, 0x00ff00);
+
+        function sphereCollision(sphere1, sphere2){//Function to check collision between spheres
+        
+            var dist = Math.sqrt(Math.pow(sphere1.sphere.position.x - sphere2.sphere.position.x,2) 
+                 + Math.pow(sphere1.sphere.position.y - sphere2.sphere.position.y,2)
+                 + Math.pow(sphere1.sphere.position.z - sphere2.sphere.position.z, 2)
+            );
+
+            if(dist < sphere1.radius + sphere2.radius){//if collision is true
+
+                // Reversing directions on collision
+                sphere1.ySpeed *= -1;
+                sphere1.xSpeed *= -1;
+                sphere1.zSpeed *= -1;
+                sphere2.ySpeed *= -1;
+                sphere2.xSpeed *= -1;
+                sphere2.zSpeed *= -1;
+            }
+        }
 
         function animate(){// function to animate sphere
 
             s1.move();
             s2.move();
+            sphereCollision(s1, s2);
             
             renderer.render(scene, camera);
             requestAnimationFrame(animate);
