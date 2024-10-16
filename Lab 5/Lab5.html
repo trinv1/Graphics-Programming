@@ -30,11 +30,15 @@ class Sphere {//Class for sphere
             this.sphere.position.set(xPosition, yPosition, zPosition);
             this.topBoundary = topBoundary;
             this.bottomBoundary = bottomBoundary;
+            this.gravity = 0.1;
             
             scene.add( this.sphere );//add sphere to scene
         }
 
         move(){//Function to move sphere
+
+            //applied gravity to the vertical speed
+            this.ySpeed -= this.gravity;
 
             // Update positions
             this.sphere.position.x += this.xSpeed;
@@ -45,11 +49,11 @@ class Sphere {//Class for sphere
             this.sphere.rotation.y += 0.01; 
             this.sphere.rotation.x += 0.01;
             
-             // Boundary checks for vertical movement
-        if (this.sphere.position.y >= this.topBoundary - this.radius 
-        || this.sphere.position.y <= plane.position.y + this.radius) {
-            this.ySpeed *= -1; // Reverse direction 
-        }
+                // Boundary checks for vertical movement
+            if (this.sphere.position.y <= plane.position.y + this.radius) {
+                this.ySpeed *= -1; // Reverse direction                       
+                this.sphere.position.y = plane.position.y + this.radius; //Making sure balls dont leave plane
+            }
             
         }
 
