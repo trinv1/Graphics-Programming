@@ -15,9 +15,11 @@
 
 class Sphere {//Class for sphere
         
-        constructor(scene, speed, direction, topBoundary, bottomBoundary){//Constructor with parameters
+        constructor(scene, xPosition, yPosition, speed, direction, topBoundary, bottomBoundary){//Constructor with parameters
             this.geometrySphere = new THREE.SphereGeometry( 15, 32, 16);
             this.materialSphere = new THREE.MeshLambertMaterial( { color: 0xffff00, wireframe: false } );
+            this.xPosition = xPosition;
+            this.yPosition = yPosition;
             this.sphere = new THREE.Mesh ( this.geometrySphere, this.materialSphere );
             this.sphere.castShadow = true; //enable shadow casting
             this.speed = speed;
@@ -37,7 +39,7 @@ class Sphere {//Class for sphere
             this.sphere.position.y += this.speed * this.direction;//moving sphere left and right
             
             //Change direction if it reaches top of scene
-            if (this.sphere.position.y > this.topBoundary || this.sphere.position.y < plane.position.x - 5) {
+            if (this.sphere.position.y > this.topBoundary || this.sphere.position.y < plane.position.x - 12) {
                 this.direction *= -1; //reversing the direction
             }
         }
@@ -82,7 +84,7 @@ class Sphere {//Class for sphere
         const geometryPlane = new THREE.PlaneGeometry( 70, 60 );
         const planeMaterial = new THREE.MeshLambertMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         const plane = new THREE.Mesh( geometryPlane, planeMaterial );
-        plane.position.y = -20; //positioning  the plane below the sphere  
+        plane.position.y = -30; //positioning  the plane below the sphere  
         plane.rotation.x = -Math.PI / 2; // Laying the plane flat under the sphere
         plane.receiveShadow = true;
         scene.add( plane );//add plane to scene
@@ -95,11 +97,13 @@ class Sphere {//Class for sphere
         spotLight.position.set(100, 1000, 100);
         scene.add(spotLight);
 
-        s1= new Sphere(scene, 0.1, 1, 11, -7);
+        s1= new Sphere(scene , 0, 20, 0.2, 1, 30);
+        s2= new Sphere(scene , 0, 0, 0.1, -1, 11);
 
         function animate(){// function to animate sphere
 
             s1.move();
+            s2.move();
             
             renderer.render(scene, camera);
             requestAnimationFrame(animate);
