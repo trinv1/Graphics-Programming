@@ -50,10 +50,10 @@ class Sphere {//Class for sphere
             this.sphere.rotation.x += 0.01;
             
                 // Boundary checks for vertical movement
-            if (this.sphere.position.y <= plane.position.y + this.radius) {
+        /*    if (this.sphere.position.y <= plane.position.y + this.radius) {
                 this.ySpeed *= -1; // Reverse direction                       
                 this.sphere.position.y = plane.position.y + this.radius; //Making sure balls dont leave plane
-            }
+            }*/
             
         }
 
@@ -94,13 +94,17 @@ class Sphere {//Class for sphere
         scene.add( directionalLight );
 
         //Plane
-        const geometryPlane = new THREE.PlaneGeometry( 300, 190 );
+       /* const geometryPlane = new THREE.PlaneGeometry( 300, 190 );
         const planeMaterial = new THREE.MeshLambertMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         const plane = new THREE.Mesh( geometryPlane, planeMaterial );
         plane.position.y = -30; //positioning  the plane below the sphere  
         plane.rotation.x = -Math.PI / 2; // Laying the plane flat under the sphere
         plane.receiveShadow = true;
-        scene.add( plane );//add plane to scene
+        scene.add( plane );//add plane to scene*/
+        const geometry = new THREE.BoxGeometry( 60, 60, 60 ); 
+        const material = new THREE.MeshBasicMaterial( {color: 0xffffff, transparent: true, opacity: 0.2 } ); 
+         const cube = new THREE.Mesh( geometry, material ); 
+        scene.add( cube );
 
         const light = new THREE.AmbientLight( 0x404040, 0.3 ); // soft white light
         light.position.set(50, 50, 100);
