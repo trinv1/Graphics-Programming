@@ -18,7 +18,7 @@ class Sphere {//Class for sphere
         constructor(scene, xPosition, yPosition, zPosition, ySpeed, xSpeed, zSpeed, radius, topBoundary, bottomBoundary, colour){//Constructor with parameters
             this.radius = radius;
             this.geometrySphere = new THREE.SphereGeometry( this.radius, 16, 8);
-            this.materialSphere = new THREE.MeshLambertMaterial( { color: colour, wireframe: false } );
+            this.materialSphere = new THREE.MeshLambertMaterial( { color: colour, wireframe: true } );
             this.xPosition = xPosition;
             this.yPosition = yPosition;
             this.zPosition = zPosition;
@@ -137,7 +137,7 @@ class Sphere {//Class for sphere
         scene.add( plane );//add plane to scene
 
         const geometry = new THREE.BoxGeometry( 70, 70, 70 ); 
-        const material = new THREE.MeshBasicMaterial( {color: 0xff0000, transparent: true, opacity: 2, wireframe: true } ); 
+        const material = new THREE.MeshBasicMaterial( {color: 0xff0000, transparent: true, opacity: 0.5, wireframe: true } ); 
         const cube = new THREE.Mesh( geometry, material ); 
         cube.position.set(0, 0, 0);
         scene.add( cube );
