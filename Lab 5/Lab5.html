@@ -31,7 +31,6 @@ class Sphere {//Class for sphere
             this.topBoundary = topBoundary;
             this.bottomBoundary = bottomBoundary;
             this.gravity = 0.1;
-            this.bounceDeduction = 0.9;
             
             scene.add( this.sphere );//add sphere to scene
         }
@@ -96,7 +95,7 @@ class Sphere {//Class for sphere
         var camera = new THREE.PerspectiveCamera(76, window.innerWidth / window.innerHeight, 0.1, 1000);
 
         // Set camera position
-        camera.position.z = 110;
+        camera.position.z = 150;
         camera.position.x = 40;
         camera.position.y = 20;
 
@@ -125,8 +124,20 @@ class Sphere {//Class for sphere
         directionalLight.shadow.camera.bottom = -100;
         scene.add( directionalLight );
 
+       // var helper = new THREE.CameraHelper( directionalLight.shadow.camera );
+       // scene.add( helper )
+
+        //Plane
+        const geometryPlane = new THREE.PlaneGeometry( 300, 190 );
+        const planeMaterial = new THREE.MeshLambertMaterial( {color: 0xfffff0, side: THREE.DoubleSide} );
+        const plane = new THREE.Mesh( geometryPlane, planeMaterial );
+        plane.position.y = -49; //positioning  the plane below the sphere  
+        plane.rotation.x = -Math.PI / 2; // Laying the plane flat under the box
+        plane.receiveShadow = true;
+        scene.add( plane );//add plane to scene
+
         const geometry = new THREE.BoxGeometry( 70, 70, 70 ); 
-        const material = new THREE.MeshStandardMaterial( {color: 0xffffff, transparent: true, opacity: 0.2 } ); 
+        const material = new THREE.MeshBasicMaterial( {color: 0xff0000, transparent: true, opacity: 2, wireframe: true } ); 
         const cube = new THREE.Mesh( geometry, material ); 
         cube.position.set(0, 0, 0);
         scene.add( cube );
@@ -160,24 +171,6 @@ class Sphere {//Class for sphere
                 sphere2.zSpeed *= -1;
             }
         }
-
-     /*   function cubeCollision(sphere, cube){
-            var dist = Math.sqrt(Math.pow(sphere.sphere.position.x - cube.cube.position.x,2) 
-                 + Math.pow(sphere.sphere.position.y - cube.cube.position.y,2)
-                 + Math.pow(sphere.sphere.position.z - cube.cube.position.z, 2)
-            );
-
-            if(dist < sphere1.radius + cube.position){//if collision is true
-
-                // Reversing directions on collision
-                sphere1.ySpeed *= -1;
-                sphere1.xSpeed *= -1;
-                sphere1.zSpeed *= -1;
-                sphere2.ySpeed *= -1;
-                sphere2.xSpeed *= -1;
-                sphere2.zSpeed *= -1;
-            }
-        }*/
 
         function animate(){// function to animate sphere
 
