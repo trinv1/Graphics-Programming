@@ -18,7 +18,9 @@ class Sphere {//Class for sphere
         constructor(scene, xPosition, yPosition, zPosition, ySpeed, xSpeed, zSpeed, radius, topBoundary, bottomBoundary, colour){//Constructor with parameters
             this.radius = radius;
             this.geometrySphere = new THREE.SphereGeometry( this.radius, 16, 8);
-            this.materialSphere = new THREE.MeshLambertMaterial( { color: colour, wireframe: true } );
+            this.materialSphere = new THREE.MeshLambertMaterial( { color: colour, wireframe: false } );
+            this.wireframeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true }); // Wireframe color can be black or any other
+            this.wireframe = new THREE.Mesh(this.geometrySphere, this.wireframeMaterial);
             this.xPosition = xPosition;
             this.yPosition = yPosition;
             this.zPosition = zPosition;
@@ -28,11 +30,13 @@ class Sphere {//Class for sphere
             this.xSpeed = xSpeed;
             this.zSpeed = zSpeed;
             this.sphere.position.set(xPosition, yPosition, zPosition);
+            this.wireframe.position.set(xPosition, yPosition, zPosition);
             this.topBoundary = topBoundary;
             this.bottomBoundary = bottomBoundary;
             this.gravity = 0.1;
             
             scene.add( this.sphere );//add sphere to scene
+            scene.add(this.wireframe);//add wireframe to scene
         }
 
         move(){//Function to move sphere
@@ -44,10 +48,13 @@ class Sphere {//Class for sphere
             this.sphere.position.x += this.xSpeed;
             this.sphere.position.y += this.ySpeed;
             this.sphere.position.z += this.zSpeed;
+            this.wireframe.position.copy(this.sphere.position); // Sync wireframe position with the sphere
             
             this.sphere.rotation.z += 0.01;
             this.sphere.rotation.y += 0.01; 
             this.sphere.rotation.x += 0.01;
+
+            this.wireframe.rotation.copy(this.sphere.rotation); // Sync wireframe rotation with the sphere
             
             // Bottom boundary check (y-axis)               //referencing half the cubes height
             if (this.sphere.position.y <= cube.position.y - cube.geometry.parameters.height / 2 - this.radius) {
@@ -124,8 +131,8 @@ class Sphere {//Class for sphere
         directionalLight.shadow.camera.bottom = -100;
         scene.add( directionalLight );
 
-       // var helper = new THREE.CameraHelper( directionalLight.shadow.camera );
-       // scene.add( helper )
+      //  var helper = new THREE.CameraHelper( directionalLight.shadow.camera );
+      //  scene.add( helper )
 
         //Plane
         const geometryPlane = new THREE.PlaneGeometry( 300, 190 );
@@ -137,7 +144,7 @@ class Sphere {//Class for sphere
         scene.add( plane );//add plane to scene
 
         const geometry = new THREE.BoxGeometry( 70, 70, 70 ); 
-        const material = new THREE.MeshBasicMaterial( {color: 0xff0000, transparent: true, opacity: 0.5, wireframe: true } ); 
+        const material = new THREE.MeshLambertMaterial( {color: 0xff0000, transparent: true, opacity: 0.5, wireframe: true } ); 
         const cube = new THREE.Mesh( geometry, material ); 
         cube.position.set(0, 0, 0);
         scene.add( cube );
