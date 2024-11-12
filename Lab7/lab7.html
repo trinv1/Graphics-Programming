@@ -16,9 +16,10 @@
 
             //print to console
             console.log(data);
+            data = data.slice(0, 2500);
             
             //call function
-            plotCO2data(data);
+            plotCO2Data(data);
         });
 
         //Executed once the file has downloaded
@@ -28,6 +29,47 @@
             var margin = { top: 50, right: 50, bottom: 50, left: 50 },
             width = 900 - margin.left - margin.right,
             height = 670 - margin.top - margin.bottom;
+
+            var x = d3.scaleLinear()
+                .domain(d3.extent(data, function (d) { return (d["years_before_2023"]); }))//CO2 values
+                .range([0,width]);
+            
+
+            var y = d3.scaleLinear()
+                .domain(d3.extent(data, function (d) { return d["co2_ppmv"]; }))
+                .range([height, 0]);
+
+            var valueLine = d3.line() //drawing line -map x, y coors for each data point using the scales
+                .x(function(d){return x(d["years_before_2023"])})
+                .y(function(d){return y(d["co2_ppmv"])});
+
+            //Axes
+            var xAxis = d3.axisBottom(x)
+                .ticks(3);//specifying number of ticks
+
+            var yAxis = d3.axisLeft(y)
+                .ticks(3);//specifying number of ticks
+
+            var svg = d3.select('body')
+                .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+
+                .append("g")
+
+                    //adds offset so numeric values are visible
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            svg.append('g')//append a <g> - group element
+                .attr('class', 'x axis')
+                .call(xAxis); //letting axis do its things
+
+                svg.append('g')
+                .attr('class', 'y axis') //specifying classes
+                .call(yAxis); //letting axis do its things
+
+                svg.append("path") //adding the valueline path
+                    .attr("d", valueLine(data));
         }
 
     </script>
