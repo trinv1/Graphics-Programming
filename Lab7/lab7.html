@@ -65,14 +65,27 @@
                 .attr("transform", "translate(0," + height + ")")//moving x axis to bottom
                 .call(xAxis); //letting axis do its things
 
-                svg.append('g')
+            svg.append('g')
                 .attr('class', 'y axis') //specifying classes
                 .call(yAxis); //letting axis do its things
 
-                svg.append("path") //adding the valueline path
+            svg.append("path") //adding the valueline path
                 .attr("d", valueLine(data))
                 .attr("stroke", "red")       
-                .attr("fill", "none")           
+                .attr("fill", "none")      
+                
+            svg.append("text")  // text label for the x axis
+                .attr("x", 400 )
+                .attr("y", 615 )
+                .style("text-anchor", "middle")
+                .text("Years before 2023");
+
+            svg.append("text")  // text label for the x axis
+                .attr("x", -200 )
+                .attr("y", -10 )
+                .attr("transform", "rotate(-90)")
+                .style("text-anchor", "middle")
+                .text("CO2 PPMV");
             }
 
     </script>
