@@ -62,6 +62,7 @@
 
             svg.append('g')//append a <g> - group element
                 .attr('class', 'x axis')
+                .attr("transform", "translate(0," + height + ")")//moving x axis to bottom
                 .call(xAxis); //letting axis do its things
 
                 svg.append('g')
