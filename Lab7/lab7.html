@@ -16,7 +16,7 @@
 
             //print to console
             console.log(data);
-            data = data.slice(0, 3500);
+            data = data.slice(0, 500);
             
             //call function
             plotCO2Data(data);
@@ -26,8 +26,8 @@
         function plotCO2Data(data){
 
             //Set up SVG size and margins
-            var margin = { top: 50, right: 50, bottom: 50, left: 50 },
-            width = 900 - margin.left - margin.right,
+            var margin = { top: 50, right: 100, bottom: 50, left: 50 },
+            width = 1000 - margin.left - margin.right,
             height = 670 - margin.top - margin.bottom;
 
             var x = d3.scaleLinear()
@@ -39,16 +39,33 @@
                 .domain(d3.extent(data, function (d) { return d["co2_ppmv"]; }))
                 .range([height, 0]);
 
-            var valueLine = d3.line() //drawing line -map x, y coors for each data point using the scales
-                .x(function(d){return x(d["years_before_2023"])})
-                .y(function(d){return y(d["co2_ppmv"])});
+            //value line for temp ch4
+            var y2 = d3.scaleLinear()
+                .domain(d3.extent(data, function (d) { return (d["temp_anomaly"]); }))//temp anomaly
+                .range([height, 0]);
+
+            // Line for CO2
+            var valueLineCO2 = d3.line() //drawing line -map x, y coors for each data point using the scales
+                .x(function(d) { return x(d["years_before_2023"]); })
+                .y(function(d) { return y(d["co2_ppmv"]); });
+
+            // Line for Temperature Anomaly
+            var valueLineTemp = d3.line()
+                .x(function(d) { return x(d["years_before_2023"]); })
+                .y(function(d) { return y2(d["temp_anomaly"]); });
+
+
+            //value line for methane
 
             //Axes
             var xAxis = d3.axisBottom(x)
-                .ticks(3);//specifying number of ticks
+                .ticks(10);//specifying number of ticks
 
-            var yAxis = d3.axisLeft(y)
-                .ticks(3);//specifying number of ticks
+            var yAxisLeft = d3.axisLeft(y)
+                .ticks(10);//specifying number of ticks
+
+            var yAxisRight = d3.axisRight(y2)
+                .ticks(10);//specifying number of ticks
 
             var svg = d3.select('body')
                 .append("svg")
@@ -57,8 +74,8 @@
 
                 .append("g")
 
-                    //adds offset so numeric values are visible
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                //adds offset so numeric values are visible
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             svg.append('g')//append a <g> - group element
                 .attr('class', 'x axis')
@@ -66,13 +83,23 @@
                 .call(xAxis); //letting axis do its things
 
             svg.append('g')
-                .attr('class', 'y axis') //specifying classes
-                .call(yAxis); //letting axis do its things
+                .attr('class', 'y axis left') //specifying classes
+                .call(yAxisLeft); //letting axis do its things
 
-            svg.append("path") //adding the valueline path
-                .attr("d", valueLine(data))
-                .attr("stroke", "red")       
+            svg.append('g')
+                .attr('class', 'y axis right') //specifying classes
+                .attr("transform", "translate(" + width + ", 0)") //moving y axis to right
+                .call(yAxisRight); //letting axis do its things
+
+            svg.append("path") //adding the valuelineTemp path
+                .attr("d", valueLineTemp(data))
+                .attr("stroke", "blue")       
                 .attr("fill", "none")      
+
+            svg.append("path") //adding the valuelineCO2 path
+                .attr("d", valueLineCO2(data))
+                .attr("stroke", "red")       
+                .attr("fill", "none")  
                 
             svg.append("text")  // text label for the x axis
                 .attr("x", 400 )
@@ -80,14 +107,21 @@
                 .style("text-anchor", "middle")
                 .text("Years before 2023");
 
-            svg.append("text")  // text label for the x axis
-                .attr("x", -200 )
-                .attr("y", -10 )
+            svg.append("text")  // text label for co2
+                .attr("x", -220 )
+                .attr("y", -30 )
                 .attr("transform", "rotate(-90)")
                 .style("text-anchor", "middle")
                 .text("CO2 PPMV");
 
-            svg.append("text")  // text label for the x axis
+            svg.append("text")  // text label for temp anomaly
+                .attr("x", -200 )
+                .attr("y", 900 )
+                .attr("transform", "rotate(-90)")
+                .style("text-anchor", "middle")
+                .text("Global Temperature Anomaly");
+
+            svg.append("text")  // text label for heading
                 .attr("x", 400 )
                 .attr("y", -10)
                 .style("text-anchor", "middle")
