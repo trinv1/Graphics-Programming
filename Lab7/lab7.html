@@ -16,7 +16,7 @@
 
             //print to console
             console.log(data);
-            data = data.slice(0, 2500);
+            data = data.slice(0, 3500);
             
             //call function
             plotCO2Data(data);
@@ -70,8 +70,10 @@
                 .call(yAxis); //letting axis do its things
 
                 svg.append("path") //adding the valueline path
-                    .attr("d", valueLine(data));
-        }
+                .attr("d", valueLine(data))
+                .attr("stroke", "red")       
+                .attr("fill", "none")           
+            }
 
     </script>
     </body>
