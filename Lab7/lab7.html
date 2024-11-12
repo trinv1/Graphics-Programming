@@ -26,13 +26,21 @@
         function plotCO2Data(data){
 
             //Set up SVG size and margins
-            var margin = { top: 50, right: 100, bottom: 50, left: 50 },
+            var margin = { top: 50, right: 100, bottom: 180, left: 50 },
+            margin2 = {top: 430, right: 20, bottom: 80, left: 40},
             width = 1000 - margin.left - margin.right,
             height = 670 - margin.top - margin.bottom;
+            height2 = 670 - margin2.top - margin2.bottom;
+       
+            var parseDate = d3.timeParse("%m/%d/%Y %H:%M");
 
             var x = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return (d["years_before_2023"]); }))//CO2 values
-                .range([0,width]);           
+                .range([0,width]);  
+                
+            var x2 = d3.scaleLinear()
+                .domain(d3.extent(data, function (d) { return (d["years_before_2023"]); }))//CO2 values
+                .range([0,width]); 
 
             var y = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return d["co2_ppmv"]; }))
@@ -61,11 +69,11 @@
                 .x(function(d) { return x(d["years_before_2023"]); })
                 .y(function(d) { return y3(d["ch4_ppb"]); });
 
-
-            //value line for methane
-
             //Axes
             var xAxis = d3.axisBottom(x)
+                .ticks(10);//specifying number of ticks
+
+            var xAxis2 = d3.axisBottom(x2)
                 .ticks(10);//specifying number of ticks
 
             var yAxisLeft = d3.axisLeft(y)
@@ -88,6 +96,11 @@
                 .attr('class', 'x axis')
                 .attr("transform", "translate(0," + height + ")")//moving x axis to bottom
                 .call(xAxis); //letting axis do its things
+
+            svg.append('g')//append a <g> - group element
+                .attr('class', 'x2 axis')
+                .attr("transform", "translate(0," + (height + 140) + ")")//moving x axis to bottom
+                .call(xAxis2); //letting axis do its things
 
             svg.append('g')
                 .attr('class', 'y axis left') //specifying classes
@@ -115,7 +128,7 @@
                 
             svg.append("text")  // text label for the x axis
                 .attr("x", 400 )
-                .attr("y", 615 )
+                .attr("y", 480 )
                 .style("text-anchor", "middle")
                 .text("Years before 2023");
 
@@ -124,7 +137,7 @@
                 .attr("y", -30 )
                 .attr("transform", "rotate(-90)")
                 .style("text-anchor", "middle")
-                .text("CO2 PPMV");
+                .text("Atmospheric CO2 Level");
 
             svg.append("text")  // text label for temp anomaly
                 .attr("x", -200 )
@@ -137,7 +150,7 @@
                 .attr("x", 400 )
                 .attr("y", -10)
                 .style("text-anchor", "middle")
-                .text("Atmospheric CO2 Levels");
+                .text("Atmospheric CO2 Level Over Time");
 
             // Coloured text indicating each option
             svg.append("text")
