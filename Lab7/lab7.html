@@ -16,7 +16,7 @@
 
             //print to console
             console.log(data);
-            data = data.slice(0, 500);
+            data = data.slice(0, 700);
             
             //call function
             plotCO2Data(data);
@@ -32,16 +32,18 @@
 
             var x = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return (d["years_before_2023"]); }))//CO2 values
-                .range([0,width]);
-            
+                .range([0,width]);           
 
             var y = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return d["co2_ppmv"]; }))
                 .range([height, 0]);
 
-            //value line for temp ch4
             var y2 = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return (d["temp_anomaly"]); }))//temp anomaly
+                .range([height, 0]);
+
+            var y3 = d3.scaleLinear()
+                .domain(d3.extent(data, function (d) { return (d["ch4_ppb"]); }))//methane
                 .range([height, 0]);
 
             // Line for CO2
@@ -53,6 +55,11 @@
             var valueLineTemp = d3.line()
                 .x(function(d) { return x(d["years_before_2023"]); })
                 .y(function(d) { return y2(d["temp_anomaly"]); });
+
+             // Line for Methane
+             var valueLineMethane = d3.line()
+                .x(function(d) { return x(d["years_before_2023"]); })
+                .y(function(d) { return y3(d["ch4_ppb"]); });
 
 
             //value line for methane
@@ -100,6 +107,11 @@
                 .attr("d", valueLineCO2(data))
                 .attr("stroke", "red")       
                 .attr("fill", "none")  
+
+            svg.append("path") //adding the methane path
+                .attr("d", valueLineMethane(data))
+                .attr("stroke", "green")       
+                .attr("fill", "none")
                 
             svg.append("text")  // text label for the x axis
                 .attr("x", 400 )
@@ -126,6 +138,26 @@
                 .attr("y", -10)
                 .style("text-anchor", "middle")
                 .text("Atmospheric CO2 Levels");
+
+            // Coloured text indicating each option
+            svg.append("text")
+                .attr("x", width - 300)
+                .attr("y", 30)
+                .style("fill", "red")
+                .text("Atmospheric CO2 Level");
+
+            svg.append("text")
+                .attr("x", width - 300)
+                .attr("y", 50)
+                .style("fill", "blue")
+                .text("Temperature Anomaly");
+
+            svg.append("text")
+                .attr("x", width - 300)
+                .attr("y", 70)
+                .style("fill", "green")
+                .text("Methane Levels");
+
             }
 
     </script>
