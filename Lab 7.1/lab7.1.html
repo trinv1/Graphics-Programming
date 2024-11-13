@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <h1>Trin</h1>
+ <head>
+ <title>D3.js Demo</title>
+ <meta charset="UTF-8">
+ <style type="text/css"></style>
+ </head>
+ <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+    <script>
+
+        //JSON call to api data
+        $.getJSON("https://tinyurl.com/k4chnujx", function (fetchedData){
+
+            //print to console
+            console.log(data);
+            data = fetchedData.slice(0, 700);
+            
+            //call function
+            plotCO2Data(data);
+
+        });
+
+        //Global variables
+        var svg, data, valueLineCO2, valueLineTemp, valueLineMethane, brush;
+        var x, y, y2, y3;
+       
+        //Executed once the file has downloaded
+        function plotCO2Data(data){
+
+            //Set up SVG size and margins
+            var margin = { top: 50, right: 100, bottom: 180, left: 50 },
+            width = 1000 - margin.left - margin.right,
+            height = 670 - margin.top - margin.bottom;
+            
+            //Line generators
+            x = d3.scaleLinear().domain(d3.extent(data, d => d["years_before_2023"])).range([0, width]);
+            y = d3.scaleLinear().domain(d3.extent(data, d => d["co2_ppmv"])).range([height, 0]);
+            y2 = d3.scaleLinear().domain(d3.extent(data, d => d["temp_anomaly"])).range([height, 0]);
+            y3 = d3.scaleLinear().domain(d3.extent(data, d => d["ch4_ppb"])).range([height, 0]);
+
+            svg = d3.select('body')
+                .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                //adds offset so numeric values are visible
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                // Line for CO2
+            valueLineCO2 = d3.line() //drawing line -map x, y coors for each data point using the scales
+                .x(function(d) { return x(d["years_before_2023"]); })
+                .y(function(d) { return y(d["co2_ppmv"]); });
+
+            // Line for Temperature Anomaly
+            valueLineTemp = d3.line()
+                .x(function(d) { return x(d["years_before_2023"]); })
+                .y(function(d) { return y2(d["temp_anomaly"]); });
+
+             // Line for Methane
+            valueLineMethane = d3.line()
+                .x(function(d) { return x(d["years_before_2023"]); })
+                .y(function(d) { return y3(d["ch4_ppb"]); });
+            
+            
+            //Axes
+            var xAxis = d3.axisBottom(x).ticks(10);
+            var yAxisLeft = d3.axisLeft(y).ticks(10);
+            var yAxisRight = d3.axisRight(y2).ticks(10);           
+            
+            //moving x axis 1 to bottom
+            svg.append('g')//append a <g> - group element
+                .attr('class', 'x axis')
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis); //letting axis do its things
+
+            svg.append('g')
+                .attr('class', 'y axis left') //specifying classes
+                .call(yAxisLeft); //letting axis do its things
+
+            svg.append('g')
+                .attr('class', 'y axis right') //specifying classes
+                .attr("transform", "translate(" + width + ", 0)") //moving y axis to right
+                .call(yAxisRight); //letting axis do its things
+            
+            svg.append("text")  // text label for the x axis
+                .attr("x", 400 )
+                .attr("y", 480 )
+                .style("text-anchor", "middle")
+                .text("Years before 2023");
+
+            svg.append("text")  // text label for co2
+                .attr("x", -220 )
+                .attr("y", -30 )
+                .attr("transform", "rotate(-90)")
+                .style("text-anchor", "middle")
+                .text("Atmospheric CO2 Level");
+
+            svg.append("text")  // text label for temp anomaly
+                .attr("x", -200 )
+                .attr("y", 900 )
+                .attr("transform", "rotate(-90)")
+                .style("text-anchor", "middle")
+                .text("Global Temperature Anomaly");
+
+            svg.append("text")  // text label for heading
+                .attr("x", 400 )
+                .attr("y", -10)
+                .style("text-anchor", "middle")
+                .text("Atmospheric CO2 Level Over Time");
+
+            // Coloured text indicating each option
+            svg.append("text")
+                .attr("x", width - 300)
+                .attr("y", 30)
+                .style("fill", "red")
+                .text("Atmospheric CO2 Level");
+
+            svg.append("text")
+                .attr("x", width - 300)
+                .attr("y", 50)
+                .style("fill", "blue")
+                .text("Temperature Anomaly");
+
+            svg.append("text")
+                .attr("x", width - 300)
+                .attr("y", 70)
+                .style("fill", "green")
+                .text("Methane Levels");
+
+        }
+
+
+    </script>
+    </body>
+</body>
+</html>
