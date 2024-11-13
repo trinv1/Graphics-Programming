@@ -23,6 +23,10 @@
             plotCO2Data(data);
 
         });
+
+        //Global variables
+        var svg, data, valueLineCO2, valueLineTemp, valueLineMethane, brush;
+        var x, y, y2, y3;
        
         //Executed once the file has downloaded
         function plotCO2Data(data){
@@ -47,17 +51,17 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             
                 // Line for CO2
-            var valueLineCO2 = d3.line() //drawing line -map x, y coors for each data point using the scales
+            valueLineCO2 = d3.line() //drawing line -map x, y coors for each data point using the scales
                 .x(function(d) { return x(d["years_before_2023"]); })
                 .y(function(d) { return y(d["co2_ppmv"]); });
 
             // Line for Temperature Anomaly
-            var valueLineTemp = d3.line()
+            valueLineTemp = d3.line()
                 .x(function(d) { return x(d["years_before_2023"]); })
                 .y(function(d) { return y2(d["temp_anomaly"]); });
 
              // Line for Methane
-             var valueLineMethane = d3.line()
+            valueLineMethane = d3.line()
                 .x(function(d) { return x(d["years_before_2023"]); })
                 .y(function(d) { return y3(d["ch4_ppb"]); });
             
