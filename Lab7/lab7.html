@@ -11,22 +11,22 @@
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
     <script>
-        
-        //Global variables
-        var svg, data, valueLineCO2, valueLineTemp, valueLineMethane, brush;
-        var x, y, y2, y3;
 
         //JSON call to api data
         $.getJSON("https://tinyurl.com/k4chnujx", function (fetchedData){
 
             //print to console
             console.log(data);
-            data = fetchedData.slice(0, 1000);
+            data = fetchedData.slice(0, 700);
             
             //call function
             plotCO2Data(data);
 
         });
+
+        //Global variables
+        var svg, data, valueLineCO2, valueLineTemp, valueLineMethane, brush;
+        var x, y, y2, y3;
        
         //Executed once the file has downloaded
         function plotCO2Data(data){
@@ -50,14 +50,14 @@
                 //adds offset so numeric values are visible
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             
-            // Defining a clip path that lines cant leave
-            svg.append("defs").append("clipPath")
+            //Defining a clip path that lines cant leave
+             svg.append("defs").append("clipPath")
                 .attr("id", "clip")
                 .append("rect")
                 .attr("width", width)
                 .attr("height", height);
 
-            // Line for CO2
+                // Line for CO2
             valueLineCO2 = d3.line() //drawing line -map x, y coors for each data point using the scales
                 .x(function(d) { return x(d["years_before_2023"]); })
                 .y(function(d) { return y(d["co2_ppmv"]); });
@@ -93,7 +93,7 @@
                 .attr("transform", "translate(" + width + ", 0)") //moving y axis to right
                 .call(yAxisRight); //letting axis do its things
             
-            //Added a group for the lines with the clip path applied
+            //Adding a group for the lines with the clip path applied
             var lineGroup = svg.append("g").attr("clip-path", "url(#clip)");
             
             //Lines cant go outside axis
@@ -181,6 +181,7 @@
             svg.selectAll(".line-temp").datum(data).transition().duration(1000).attr("d", valueLineTemp);
             svg.selectAll(".line-methane").datum(data).transition().duration(1000).attr("d", valueLineMethane);
         }
+
     </script>
     </body>
 </body>
