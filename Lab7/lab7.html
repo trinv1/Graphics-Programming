@@ -11,6 +11,10 @@
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
     <script>
+        
+        //Global variables
+        var svg, data, valueLineCO2, valueLineTemp, valueLineMethane, brush;
+        var x, y, y2, y3;
 
         //JSON call to api data
         $.getJSON("https://tinyurl.com/k4chnujx", function (data){
@@ -23,10 +27,6 @@
             plotCO2Data(data);
 
         });
-
-        //Global variables
-        var svg, data, valueLineCO2, valueLineTemp, valueLineMethane, brush;
-        var x, y, y2, y3;
        
         //Executed once the file has downloaded
         function plotCO2Data(data){
@@ -86,23 +86,17 @@
                 .attr("transform", "translate(" + width + ", 0)") //moving y axis to right
                 .call(yAxisRight); //letting axis do its things
             
-            svg.append("path") //adding the valuelineTemp path
-                .attr("class", "line-temp")
-                .attr("d", valueLineTemp(data))
-                .attr("stroke", "blue")       
-                .attr("fill", "none")      
-
-            svg.append("path") //adding the valuelineCO2 path
-                .attr("class", "line-co2")
-                .attr("d", valueLineCO2(data))
-                .attr("stroke", "red")       
-                .attr("fill", "none")
-
-            svg.append("path") //adding the methane path
-                .attr("class", "line-methane")
-                .attr("d", valueLineMethane(data))
-                .attr("stroke", "green")       
-                .attr("fill", "none")
+            // Added a group for the lines with the clip path applied
+            var lineGroup = svg.append("g").attr("clip-path", "url(#clip)");
+            
+            //Lines cant go outside axis
+            lineGroup.append("path").attr("class", "line-co2").datum(data).attr("d", valueLineCO2).attr("stroke", "red").attr("fill", "none");
+            lineGroup.append("path").attr("class", "line-temp").datum(data).attr("d", valueLineTemp).attr("stroke", "blue").attr("fill", "none");
+            lineGroup.append("path").attr("class", "line-methane").datum(data).attr("d", valueLineMethane).attr("stroke", "green").attr("fill", "none");
+            
+            //Brush behaviour
+            brush = d3.brushX().extent([[0, 0], [width, height]]).on("end", zoom);
+            svg.append("g").attr("class", "brush").call(brush);
             
             svg.append("text")  // text label for the x axis
                 .attr("x", 400 )
@@ -150,10 +144,29 @@
                 .text("Methane Levels");
 
         }
-        
 
+        var idleTimeout;
+        function idled() { idleTimeout = null; }
 
+        function zoom(event) {
+            const extent = event.selection;
+            console.log("Brush selection extent:", extent);
 
+            if (!extent) {
+                if (!idleTimeout) return idleTimeout = setTimeout(idled, 350);
+                x.domain(d3.extent(data, d => d["years_before_2023"]));
+            } else {
+                x.domain([x.invert(extent[0]), x.invert(extent[1])]);
+                svg.select(".brush").call(brush.move, null);
+            }
+
+            svg.select(".x.axis").transition().duration(1000).call(d3.axisBottom(x));
+
+            // Redraw the lines with updated scales
+            svg.selectAll(".line-co2").datum(data).transition().duration(1000).attr("d", valueLineCO2);
+            svg.selectAll(".line-temp").datum(data).transition().duration(1000).attr("d", valueLineTemp);
+            svg.selectAll(".line-methane").datum(data).transition().duration(1000).attr("d", valueLineMethane);
+        }
     </script>
     </body>
 </body>

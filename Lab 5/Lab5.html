@@ -119,8 +119,8 @@ class Sphere {//Class for sphere
         directionalLight.castShadow = true; 
         
         //Setting up shadow properties for the light
-        directionalLight.shadow.mapSize.width = 2048; 
-        directionalLight.shadow.mapSize.height = 2048; 
+        directionalLight.shadow.mapSize.width = 500; 
+        directionalLight.shadow.mapSize.height = 500; 
         directionalLight.shadow.camera.near = 0.5; 
         directionalLight.shadow.camera.far = 300; 
 
@@ -131,28 +131,24 @@ class Sphere {//Class for sphere
         directionalLight.shadow.camera.bottom = -100;
         scene.add( directionalLight );
 
-      //  var helper = new THREE.CameraHelper( directionalLight.shadow.camera );
-      //  scene.add( helper )
+        var helper = new THREE.CameraHelper( directionalLight.shadow.camera  );
+        scene.add( helper )
 
         //Plane
         const geometryPlane = new THREE.PlaneGeometry( 300, 190 );
         const planeMaterial = new THREE.MeshLambertMaterial( {color: 0xfffff0, side: THREE.DoubleSide} );
         const plane = new THREE.Mesh( geometryPlane, planeMaterial );
-        plane.position.y = -49; //positioning  the plane below the sphere  
+        plane.position.y = -50; //positioning  the plane below the sphere  
         plane.rotation.x = -Math.PI / 2; // Laying the plane flat under the box
         plane.receiveShadow = true;
         scene.add( plane );//add plane to scene
 
-        const geometry = new THREE.BoxGeometry( 70, 70, 70 ); 
-        const material = new THREE.MeshLambertMaterial( {color: 0xff0000, transparent: true, opacity: 0.5, wireframe: true } ); 
+        const geometry = new THREE.BoxGeometry( 70, 73, 70 ); 
+        const material = new THREE.MeshLambertMaterial( {color: 0xff0000, transparent: true, opacity: 0.5 } ); 
         const cube = new THREE.Mesh( geometry, material ); 
         cube.position.set(0, 0, 0);
         scene.add( cube );
 
-        const light = new THREE.AmbientLight( 0x404040, 0.3 ); // soft white light
-        light.position.set(50, 50, 100);
-        scene.add( light );   
-     
         var spotLight = new THREE.SpotLight(0xffff0);
         spotLight.position.set(100, 1000, 100);
         scene.add(spotLight);
