@@ -17,7 +17,7 @@
 
             //print to console
             console.log(data);
-            data = fetchedData.slice(0, 700);
+            data = fetchedData.slice(0, 1500);
             
             //call function
             plotCO2Data(data);
@@ -32,12 +32,12 @@
         function plotCO2Data(data){
 
             //Set up SVG size and margins
-            var margin = { top: 50, right: 100, bottom: 180, left: 50 },
+            var margin = { top: 50, right: 150, bottom: 180, left: 50 },
             width = 1000 - margin.left - margin.right,
             height = 670 - margin.top - margin.bottom;
             
             //Line generators
-            x = d3.scaleLinear().domain(d3.extent(data, d => d["years_before_2023"])).range([0, width]);
+            x = d3.scaleLinear().domain(d3.extent(data, d => d["years_before_2023"])).range([0, width + 69]);
             y = d3.scaleLinear().domain(d3.extent(data, d => d["co2_ppmv"])).range([height, 0]);
             y2 = d3.scaleLinear().domain(d3.extent(data, d => d["temp_anomaly"])).range([height, 0]);
             y3 = d3.scaleLinear().domain(d3.extent(data, d => d["ch4_ppb"])).range([height, 0]);
@@ -76,7 +76,8 @@
             //Axes
             var xAxis = d3.axisBottom(x).ticks(10);
             var yAxisLeft = d3.axisLeft(y).ticks(10);
-            var yAxisRight = d3.axisRight(y2).ticks(10);           
+            var yAxisRight = d3.axisRight(y2).ticks(10);
+            var yAxisRight2 = d3.axisRight(y3).ticks(10);   
             
             //moving x axis 1 to bottom
             svg.append('g')//append a <g> - group element
@@ -92,6 +93,11 @@
                 .attr('class', 'y axis right') //specifying classes
                 .attr("transform", "translate(" + width + ", 0)") //moving y axis to right
                 .call(yAxisRight); //letting axis do its things
+
+            svg.append('g')
+                .attr('class', 'y axis right 2') //specifying classes
+                .attr("transform", "translate(" + (width + 70) + ", 0)") //moving y axis to right
+                .call(yAxisRight2); //letting axis do its things
             
             //Adding a group for the lines with the clip path applied
             var lineGroup = svg.append("g").attr("clip-path", "url(#clip)");
@@ -99,8 +105,20 @@
             //Lines cant go outside axis
             lineGroup.append("path").attr("class", "line-co2").datum(data).attr("d", valueLineCO2).attr("stroke", "red").attr("fill", "none");
             lineGroup.append("path").attr("class", "line-temp").datum(data).attr("d", valueLineTemp).attr("stroke", "blue").attr("fill", "none");
-            lineGroup.append("path").attr("class", "line-methane").datum(data).attr("d", valueLineMethane).attr("stroke", "green").attr("fill", "none");
+                  
+            //Defining 2nd clip path so methane line cant leave axis
+            svg.append("defs").append("clipPath")
+                .attr("id", "clip2")
+                .append("rect")
+                .attr("width", width+70)
+                .attr("height", height);
             
+            //Line group for methane line only w clip path applied
+            var lineGroup2 = svg.append("g").attr("clip-path", "url(#clip2)");
+            
+            //Line cant go outside axis
+            lineGroup2.append("path").attr("class", "line-methane").datum(data).attr("d", valueLineMethane).attr("stroke", "green").attr("fill", "none");
+
             //Brush behaviour
             brush = d3.brushX().extent([[0, 0], [width, height]]).on("end", zoom);
             svg.append("g").attr("class", "brush").call(brush);
@@ -112,18 +130,25 @@
                 .text("Years before 2023");
 
             svg.append("text")  // text label for co2
-                .attr("x", -220 )
+                .attr("x", -220)
                 .attr("y", -30 )
                 .attr("transform", "rotate(-90)")
                 .style("text-anchor", "middle")
-                .text("Atmospheric CO2 Level");
+                .text("CO2_PPM");
 
             svg.append("text")  // text label for temp anomaly
-                .attr("x", -200 )
-                .attr("y", 900 )
+                .attr("x", -200)
+                .attr("y", 850 )
                 .attr("transform", "rotate(-90)")
                 .style("text-anchor", "middle")
                 .text("Global Temperature Anomaly");
+
+            svg.append("text")  // text label for temp anomaly
+                .attr("x", -200)
+                .attr("y", 920)
+                .attr("transform", "rotate(-90)")
+                .style("text-anchor", "middle")
+                .text("CH4_PPB");
 
             svg.append("text")  // text label for heading
                 .attr("x", 400 )
@@ -136,7 +161,7 @@
                 .attr("x", width - 300)
                 .attr("y", 30)
                 .style("fill", "red")
-                .text("Atmospheric CO2 Level");
+                .text("CO2_PPM");
 
             svg.append("text")
                 .attr("x", width - 300)
