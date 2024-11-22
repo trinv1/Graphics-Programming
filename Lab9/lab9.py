@@ -18,3 +18,9 @@ plt.title('Original'), plt.xticks([]), plt.yticks([])
 plt.subplot(1, 2,2),plt.imshow(gray_image, cmap = 'gray') 
 plt.title('GrayScale'), plt.xticks([]), plt.yticks([]) 
 plt.show() 
+
+#Blurred image
+imgOut = cv2.GaussianBlur(img,(9, 9),0) 
+cv2.imshow('Blurred Image', imgOut)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
