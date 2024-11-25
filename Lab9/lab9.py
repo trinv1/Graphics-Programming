@@ -15,7 +15,7 @@ sobelVertical = cv2.Sobel(gray_image,cv2.CV_64F,0,1,ksize=5)  # y dir
 
 sobelHorizontal2 = cv2.Sobel(gray_image2, cv2.CV_64F,1,0,ksize=5)  # x dir
 sobelVertical2 = cv2.Sobel(gray_image2,cv2.CV_64F,0,1,ksize=5)  # y dir 
-sobelSum = sobelHorizontal + sobelVertical
+sobelSum = sobelHorizontal2 + sobelVertical2
 
 #Converting image to canny
 canny = cv2.Canny(img, 100, 450)
@@ -64,8 +64,11 @@ plt.title('Sobel X'), plt.xticks([]), plt.yticks([])
 plt.subplot(4, 2, 4), plt.imshow(sobelVertical2, cmap='gray')
 plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
 
+plt.subplot(4, 2, 5), plt.imshow(sobelSum, cmap='gray')
+plt.title('Sobel Sum'), plt.xticks([]), plt.yticks([])
+
 #Plotting canny image
-plt.subplot(4 , 2, 5), plt.imshow(canny2, cmap='gray')
+plt.subplot(4, 2, 6), plt.imshow(canny2, cmap='gray')
 plt.title('Canny Edge Image'), plt.xticks([]), plt.yticks([])
 
 plt.tight_layout()  # Automatically adjusts subplot spacing
