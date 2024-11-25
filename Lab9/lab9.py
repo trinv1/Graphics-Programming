@@ -31,7 +31,9 @@ threshold2 = np.zeros_like(sobelSum2, dtype=np.uint8)  #Initializing output arra
 sobelThreshold1 = 10
 sobelThreshold2 = 100
 
-rows, cols = sobelSum2.shape
+rows, cols = sobelSum2.shape #Getting dimensions of SobelSum image
+
+#Looping through each pixel in sobelSum image
 for i in range(rows):
      for j in range(cols):
         if sobelSum2[i, j] > sobelThreshold1:
