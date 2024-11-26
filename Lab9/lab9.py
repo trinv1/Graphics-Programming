@@ -2,6 +2,9 @@ import cv2
 import numpy as np 
 from matplotlib import pyplot as plt
 
+import tensorflow as tf
+from tensorflow.keras import models, layers, losses, optimizers
+
 img = cv2.imread('ATU.jpg',) 
 img2 = cv2.imread('House.jpg',) 
 
@@ -49,6 +52,38 @@ for i in range(rows):
 threshold_visual = threshold * 255  #Scaling binary values to 0 and 255 for display
 threshold_visual2 = threshold2 * 255 
 
+#Preparing training data
+#Normalizing the grayscale image to [0, 1]
+train_input = gray_image2 / 255.0  #Inputting image
+train_input = train_input.reshape(1, train_input.shape[0], train_input.shape[1], 1)  #Adding batch and channel dimensions
+
+#Preparing the training label 
+train_label = threshold_visual / 255.0  # Normalize the thresholded image to range [0, 1]
+train_label = train_label.reshape(1, train_label.shape[0], train_label.shape[1], 1)  # Reshape to match CNN output
+
+print("Shape of train_input:", train_input.shape)
+print("Shape of train_label:", train_label.shape)
+
+#Defining the CNN model
+model = models.Sequential([
+    layers.Conv2D(1, (3, 3), activation='relu', padding='same',input_shape=(None, None, 1)),
+    layers.Conv2D(1, (3, 3), activation='sigmoid', padding='same')  # Second convolution layer to refine the edges
+])
+
+#Compiling the model
+model.compile(optimizer=optimizers.Adam(learning_rate=0.001),
+              loss=losses.MeanSquaredError(),
+              metrics=['mse'])
+
+#Training the model
+history = model.fit(train_input, train_label, epochs=10, batch_size=1, verbose=1)
+
+#Testing the model on the input image
+predicted_output = model.predict(train_input)
+
+#Scaling the output back to 0-255 for visualization
+predicted_output_visual = (predicted_output[0, :, :, 0] * 255).astype(np.uint8)
+
 #Setting figure size
 plt.figure(figsize=(16, 12))  #Width=10, Height=15 
 
@@ -94,14 +129,20 @@ plt.title('Sobel Sum'), plt.xticks([]), plt.yticks([])
 plt.subplot(4, 2, 6), plt.imshow(canny2, cmap='gray')
 plt.title('Canny Edge Image'), plt.xticks([]), plt.yticks([])
 
-plt.tight_layout()  # Automatically adjusts subplot spacing
+plt.tight_layout()
 plt.show() 
 
+#Plotting thresholded images
 plt.subplot(2, 2, 1), plt.imshow(threshold * 255, cmap='gray')
 plt.title('Thresholded 10'), plt.xticks([]), plt.yticks([])
 
 plt.subplot(2, 2, 2), plt.imshow(threshold2 * 255, cmap='gray')
 plt.title('Thresholded 100'), plt.xticks([]), plt.yticks([])
+
+#Plotting
+plt.subplot(2, 2, 3)
+plt.imshow(predicted_output_visual, cmap='gray')
+plt.title('CNN Edge Detection')
 
 plt.tight_layout()  # Automatically adjusts subplot spacing
 
